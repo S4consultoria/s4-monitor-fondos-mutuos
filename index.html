@@ -211,6 +211,28 @@ tbody tr.is-top td:first-child{box-shadow:inset 3px 0 0 var(--gold)}
   font-size:11px;color:var(--muted);line-height:1.7}
 .methodbox b{color:var(--txt)}
 
+/* ═══ PERSONALIZAR SCORE ═══ */
+.weights-wrap{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 20px;margin-bottom:16px;display:none}
+.weights-wrap.show{display:block}
+.weights-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;gap:10px;flex-wrap:wrap}
+.weights-title{font-size:12.5px;font-weight:600;display:flex;align-items:center;gap:7px}
+.weights-title .dot{width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 6px var(--gold)}
+.weights-sub{color:var(--muted);font-size:10.5px;font-family:'IBM Plex Mono',monospace;margin:2px 0 14px}
+.weights-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px 22px;margin-bottom:10px}
+.wslider{display:flex;flex-direction:column;gap:6px}
+.wslider .wl{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);font-family:'IBM Plex Mono',monospace}
+.wslider .wl b{color:var(--gold);font-size:12px}
+.wslider input[type=range]{-webkit-appearance:none;width:100%;height:4px;border-radius:2px;background:var(--border2);outline:none}
+.wslider input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;height:15px;border-radius:50%;
+  background:var(--gold);cursor:pointer;border:2px solid #0A1B2C}
+.wslider input[type=range]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;background:var(--gold);cursor:pointer;border:2px solid #0A1B2C}
+.weights-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:6px}
+.weights-total{font-size:10.5px;color:var(--muted);font-family:'IBM Plex Mono',monospace}
+.weights-total b{color:var(--txt)}
+.wreset{background:transparent;border:1px solid var(--border);color:var(--muted);padding:7px 14px;border-radius:8px;
+  font-size:11px;cursor:pointer;font-family:'IBM Plex Mono',monospace;transition:.15s}
+.wreset:hover{border-color:var(--gold);color:var(--gold)}
+
 /* ═══ MODAL DE FONDO ═══ */
 .modal-overlay{position:fixed;inset:0;background:rgba(5,12,20,.72);z-index:500;display:none;align-items:flex-start;
   justify-content:center;padding:40px 20px;overflow-y:auto}
@@ -278,6 +300,7 @@ tbody tr.is-top td:first-child{box-shadow:inset 3px 0 0 var(--gold)}
     </div>
     <div class="hdr-right">
       <div id="pill-gs" class="pill click" onclick="loadData(true)" title="Click para re-sincronizar">⟳ conectando…</div>
+      <div class="pill click" onclick="toggleWeights()">⚙ Personalizar Score</div>
       <div class="pill"><b id="hdr-n">—</b> fondos</div>
       <div class="pill"><b id="hdr-admin">—</b> administradoras</div>
       <div class="pill" id="clock"></div>
@@ -295,6 +318,18 @@ tbody tr.is-top td:first-child{box-shadow:inset 3px 0 0 var(--gold)}
       <div class="vs2" id="v-score2">de la selección actual</div><div class="vbar" id="vb-score" style="width:50%"></div></div>
     <div class="vs"><div class="vl">Riesgo prom.</div><div class="vv" id="v-riesgo">—</div>
       <div class="vs2" id="v-riesgo2">sobre fondos seleccionados</div><div class="vbar" id="vb-riesgo" style="width:50%"></div></div>
+  </div>
+
+  <div class="weights-wrap" id="weights-wrap">
+    <div class="weights-hdr">
+      <div class="weights-title"><span class="dot"></span>Personalizar Score S4</div>
+    </div>
+    <div class="weights-sub">Mueve los sliders para simular otra prioridad — el ranking, los Top Pick y el gráfico se recalculan al instante. Se normalizan automáticamente, no necesitan sumar 100.</div>
+    <div class="weights-grid" id="weights-grid"></div>
+    <div class="weights-foot">
+      <div class="weights-total">Suma actual: <b id="weights-total">100</b>% → normalizado a 100% automáticamente</div>
+      <button class="wreset" onclick="resetWeights()">⟲ Restablecer pesos S4 por defecto</button>
+    </div>
   </div>
 
   <div class="asset-row" id="asset-cards"></div>
@@ -358,7 +393,7 @@ tbody tr.is-top td:first-child{box-shadow:inset 3px 0 0 var(--gold)}
             <button id="an-btn-com" onclick="setQuadMode('comision')">Retorno vs. Comisión</button>
           </div>
           <div class="chart-box"><canvas id="quadChart"></canvas></div>
-          <div class="methodbox">
+          <div class="methodbox" id="methodtext">
             <b>Cómo se calcula el Score S4 (0–100):</b> cada fondo se compara solo contra sus pares directos
             (misma Asset Class y misma Moneda). Dentro de ese grupo se calcula el percentil del fondo en 5 variables:
             <b>rentabilidad promedio</b> (30%), <b>rentabilidad YTD</b> (15%), <b>Nivel de Riesgo</b> (25%, invertido — a menor riesgo, mejor puntaje),
@@ -614,7 +649,19 @@ function percentileOf(val, arr){
   if(n<=1) return 50;
   return ((less + 0.5*eq)/n)*100;
 }
+// ── Pesos del Score S4, ajustables por el usuario en vivo ──
+const DEFAULT_WEIGHTS = {rent:30, ytd:15, riesgo:25, comision:20, consistencia:10};
+let WEIGHTS = {...DEFAULT_WEIGHTS};
+const WEIGHT_LABELS = {
+  rent:'Rentabilidad Promedio', ytd:'Rentabilidad YTD', riesgo:'Nivel de Riesgo (invertido)',
+  comision:'Comisión (invertido)', consistencia:'Consistencia (años positivos)',
+};
+
 function computeScores(){
+  const totalW = Object.values(WEIGHTS).reduce((a,b)=>a+b,0) || 1;
+  const w = {};
+  Object.keys(WEIGHTS).forEach(k=> w[k] = WEIGHTS[k]/totalW );
+
   const groups = {};
   DATA.forEach(f=>{
     const k = f.asset+'|'+f.moneda;
@@ -634,11 +681,72 @@ function computeScores(){
       const pRiesgoInv = f.riesgo!=null ? 100-percentileOf(f.riesgo, riesgos) : 50;
       const pComInv = f.comision!=null ? 100-percentileOf(f.comision, coms) : 50;
       const pCons = percentileOf(f.consistencyRatio, cons);
-      const score = pRent*0.30 + pYtd*0.15 + pRiesgoInv*0.25 + pComInv*0.20 + pCons*0.10;
+      const score = pRent*w.rent + pYtd*w.ytd + pRiesgoInv*w.riesgo + pComInv*w.comision + pCons*w.consistencia;
       f.score = Math.round(score*10)/10;
       f.scoreTier = f.score>=70 ? 'Excelente (≥70)' : f.score>=50 ? 'Bueno (50-69)' : f.score>=30 ? 'Regular (30-49)' : 'Bajo (<30)';
     });
   });
+}
+
+// ── Panel de personalización de pesos ──
+function toggleWeights(){
+  const wrap = document.getElementById('weights-wrap');
+  wrap.classList.toggle('show');
+  if(wrap.classList.contains('show') && !wrap.dataset.built){
+    buildWeightsPanel();
+    wrap.dataset.built = '1';
+  }
+}
+function buildWeightsPanel(){
+  const grid = document.getElementById('weights-grid');
+  grid.innerHTML = Object.keys(WEIGHTS).map(k=>`
+    <div class="wslider">
+      <div class="wl"><span>${WEIGHT_LABELS[k]}</span><b id="wv-${k}">${WEIGHTS[k]}%</b></div>
+      <input type="range" min="0" max="100" step="1" value="${WEIGHTS[k]}" id="w-${k}" oninput="onWeightChange('${k}')">
+    </div>
+  `).join('');
+  updateWeightsTotal();
+}
+function onWeightChange(key){
+  WEIGHTS[key] = parseInt(document.getElementById('w-'+key).value, 10);
+  document.getElementById('wv-'+key).textContent = WEIGHTS[key]+'%';
+  updateWeightsTotal();
+  computeScores();
+  buildAssetCards();
+  render();
+  renderPicks();
+  updateMethodText();
+  renderChart();
+}
+function updateWeightsTotal(){
+  const total = Object.values(WEIGHTS).reduce((a,b)=>a+b,0);
+  document.getElementById('weights-total').textContent = total;
+}
+function resetWeights(){
+  WEIGHTS = {...DEFAULT_WEIGHTS};
+  Object.keys(WEIGHTS).forEach(k=>{
+    const el = document.getElementById('w-'+k);
+    if(el){ el.value = WEIGHTS[k]; document.getElementById('wv-'+k).textContent = WEIGHTS[k]+'%'; }
+  });
+  updateWeightsTotal();
+  computeScores();
+  buildAssetCards();
+  render();
+  renderPicks();
+  updateMethodText();
+  renderChart();
+}
+function updateMethodText(){
+  const el = document.getElementById('methodtext');
+  if(!el) return;
+  const totalW = Object.values(WEIGHTS).reduce((a,b)=>a+b,0) || 1;
+  const pct = k => Math.round(WEIGHTS[k]/totalW*100);
+  el.innerHTML = `<b>Cómo se calcula el Score S4 (0–100):</b> cada fondo se compara solo contra sus pares directos
+    (misma Asset Class y misma Moneda). Dentro de ese grupo se calcula el percentil del fondo en 5 variables:
+    <b>rentabilidad promedio</b> (${pct('rent')}%), <b>rentabilidad YTD</b> (${pct('ytd')}%), <b>Nivel de Riesgo</b> (${pct('riesgo')}%, invertido — a menor riesgo, mejor puntaje),
+    <b>comisión</b> (${pct('comision')}%, invertido), y <b>consistencia</b> (${pct('consistencia')}% — % de años cerrados con retorno positivo). Grupos con menos de 3 fondos
+    no reciben Score por falta de pares comparables. Valores de retorno marcados como "sin dato" (ej. -100% exacto en fondos nuevos o vencidos)
+    se excluyen del cálculo para no distorsionar el ranking.`;
 }
 
 // ══════════════════════════════════════════════════════════
