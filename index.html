@@ -384,7 +384,7 @@ tbody tr.is-top td:first-child{box-shadow:inset 3px 0 0 var(--gold)}
           <div class="an-hdr">
             <div>
               <div class="an-title" id="an-title">Retorno vs. Riesgo — fondos filtrados</div>
-              <div class="an-sub" id="an-sub">Cada burbuja es un fondo. Tamaño: patrimonio administrado. La esquina superior izquierda (alto retorno, bajo riesgo) es la zona ganadora.</div>
+              <div class="an-sub" id="an-sub">Cada burbuja es un fondo. Tamaño: Score S4 (a mayor burbuja, mejor score). La esquina superior izquierda (alto retorno, bajo riesgo) es la zona ganadora.</div>
             </div>
             <div class="an-legend" id="an-legend"></div>
           </div>
@@ -1238,8 +1238,8 @@ function setQuadMode(mode){
   document.getElementById('an-btn-com').classList.toggle('on', mode==='comision');
   document.getElementById('an-title').textContent = mode==='riesgo' ? 'Retorno vs. Riesgo — fondos filtrados' : 'Retorno vs. Comisión — fondos filtrados';
   document.getElementById('an-sub').textContent = mode==='riesgo'
-    ? 'Cada burbuja es un fondo. Eje X: Nivel de Riesgo. Eje Y: rentabilidad promedio. Tamaño: patrimonio. La esquina superior izquierda (alto retorno, bajo riesgo) es la zona ganadora.'
-    : 'Cada burbuja es un fondo. Eje X: comisión unificada. Eje Y: rentabilidad promedio. Tamaño: patrimonio. La esquina superior izquierda (alto retorno, bajo costo) es la zona ganadora.';
+    ? 'Cada burbuja es un fondo. Eje X: Nivel de Riesgo. Eje Y: rentabilidad promedio. Tamaño: Score S4 (a mayor burbuja, mejor score). La esquina superior izquierda (alto retorno, bajo riesgo) es la zona ganadora.'
+    : 'Cada burbuja es un fondo. Eje X: comisión unificada. Eje Y: rentabilidad promedio. Tamaño: Score S4 (a mayor burbuja, mejor score). La esquina superior izquierda (alto retorno, bajo costo) es la zona ganadora.';
   renderChart();
 }
 function renderChart(){
@@ -1255,8 +1255,8 @@ function renderChart(){
   const datasets = assets.map(a=>({
     label:a,
     data: rows.filter(d=>d.asset===a).map(d=>({
-      x:d[xField], y:d.rentProm, r:Math.max(4,Math.min(26, d.patrimonio?Math.sqrt(d.patrimonio/1e6)*2.2:6)),
-      nombre:d.nombre, admin:d.admin, score:d.score,
+      x:d[xField], y:d.rentProm, r:d.score!=null ? Math.max(5,Math.min(28, 5+(d.score/100)*23)) : 5,
+      nombre:d.nombre, admin:d.admin, score:d.score, patrimonio:d.patrimonio,
     })),
     backgroundColor:(ASSET_COLOR[a]||'#8A9BAB')+'99',
     borderColor:ASSET_COLOR[a]||'#8A9BAB', borderWidth:1.5,
@@ -1281,7 +1281,12 @@ function renderChart(){
         legend:{display:false},
         tooltip:{callbacks:{label:(ctx)=>{
           const p=ctx.raw;
-          return [`${p.nombre}`,`${p.admin}`,`Rent: ${p.y.toFixed(1)}% · ${quadMode==='riesgo'?'Riesgo':'Com'}: ${p.x.toFixed(2)}%`,p.score!=null?`Score: ${p.score.toFixed(0)}`:''].filter(Boolean);
+          return [
+            p.score!=null?`Score S4: ${p.score.toFixed(0)}`:'Score: sin dato',
+            `${p.nombre}`,`${p.admin}`,
+            `Rent: ${p.y.toFixed(1)}% · ${quadMode==='riesgo'?'Riesgo':'Com'}: ${p.x.toFixed(2)}%`,
+            p.patrimonio!=null?`Patrim: S/ ${(p.patrimonio/1e6).toFixed(1)}MM`:'',
+          ].filter(Boolean);
         }}},
       },
       scales:{
