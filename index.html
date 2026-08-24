@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <style>
 :root{
   --bg:#0A1B2C;--card:#0F2438;--card2:#14304A;--border:#213E56;--border2:#1A3149;
@@ -1035,6 +1035,7 @@ let modalChart=null;
 function openModal(nombre){
   const f = DATA.find(d=>d.nombre===nombre);
   if(!f) return;
+  document.getElementById('modalOverlay').classList.add('show');
   document.getElementById('m-admin').textContent = f.admin;
   document.getElementById('m-nombre').textContent = f.nombre;
   document.getElementById('m-badges').innerHTML = [
@@ -1056,29 +1057,36 @@ function openModal(nombre){
   `;
 
   const chartWrap = document.getElementById('m-chart-wrap');
-  if(f.serie.length >= 2){
-    chartWrap.innerHTML = '<div class="modal-chart-box"><canvas id="m-chart"></canvas></div>';
-    if(modalChart) modalChart.destroy();
-    const ctx = document.getElementById('m-chart');
-    modalChart = new Chart(ctx, {
-      type:'line',
-      data:{
-        labels: f.serie.map(p=>p.label),
-        datasets:[{
-          data: f.serie.map(p=>p.value),
-          borderColor:'#C9A227', backgroundColor:'rgba(201,162,39,.08)',
-          borderWidth:2, pointRadius:3, pointBackgroundColor:'#C9A227', fill:true, tension:.25,
-        }]
-      },
-      options:{
-        responsive:true, maintainAspectRatio:false,
-        plugins:{legend:{display:false}, tooltip:{callbacks:{label:(c)=>'Valor cuota: '+c.parsed.y.toFixed(4)}}},
-        scales:{
-          x:{grid:{color:'#213E56'},ticks:{color:'#8A9BAB'}},
-          y:{grid:{color:'#213E56'},ticks:{color:'#8A9BAB'}},
+  if(typeof Chart === 'undefined'){
+    chartWrap.innerHTML = '<div class="modal-nodata">No se pudo cargar la librería de gráficos (Chart.js). Revisa tu conexión y recarga la página.</div>';
+  } else if(f.serie.length >= 2){
+    try{
+      chartWrap.innerHTML = '<div class="modal-chart-box"><canvas id="m-chart"></canvas></div>';
+      if(modalChart) modalChart.destroy();
+      const ctx = document.getElementById('m-chart');
+      modalChart = new Chart(ctx, {
+        type:'line',
+        data:{
+          labels: f.serie.map(p=>p.label),
+          datasets:[{
+            data: f.serie.map(p=>p.value),
+            borderColor:'#C9A227', backgroundColor:'rgba(201,162,39,.08)',
+            borderWidth:2, pointRadius:3, pointBackgroundColor:'#C9A227', fill:true, tension:.25,
+          }]
+        },
+        options:{
+          responsive:true, maintainAspectRatio:false,
+          plugins:{legend:{display:false}, tooltip:{callbacks:{label:(c)=>'Valor cuota: '+c.parsed.y.toFixed(4)}}},
+          scales:{
+            x:{grid:{color:'#213E56'},ticks:{color:'#8A9BAB'}},
+            y:{grid:{color:'#213E56'},ticks:{color:'#8A9BAB'}},
+          }
         }
-      }
-    });
+      });
+    }catch(err){
+      console.warn('Error dibujando gráfico del fondo:', err);
+      chartWrap.innerHTML = '<div class="modal-nodata">Ocurrió un error al dibujar el gráfico de este fondo.</div>';
+    }
   } else {
     chartWrap.innerHTML = '<div class="modal-nodata">Este fondo no tiene serie de valor cuota mensual cargada en el Excel — no se puede graficar su evolución.</div>';
   }
@@ -1129,6 +1137,10 @@ function setQuadMode(mode){
 function renderChart(){
   const canvas = document.getElementById('quadChart');
   if(!canvas || document.getElementById('view-analisis').style.display==='none') return;
+  if(typeof Chart === 'undefined'){
+    canvas.parentElement.innerHTML = '<div class="modal-nodata">No se pudo cargar la librería de gráficos (Chart.js). Revisa tu conexión e intenta recargar la página.</div>';
+    return;
+  }
   const xField = quadMode==='riesgo' ? 'riesgo' : 'comision';
   const rows = getFiltered().filter(d=>d[xField]!=null && d.rentProm!=null);
   const assets = [...new Set(rows.map(d=>d.asset))];
@@ -1144,6 +1156,7 @@ function renderChart(){
   const legend = assets.map(a=>`<span><i style="background:${ASSET_COLOR[a]||'#8A9BAB'}"></i>${a}</span>`).join('');
   document.getElementById('an-legend').innerHTML = legend;
   if(quadChart) quadChart.destroy();
+  try{
   quadChart = new Chart(canvas, {
     type:'bubble',
     data:{datasets},
@@ -1169,6 +1182,10 @@ function renderChart(){
       }
     }
   });
+  }catch(err){
+    console.warn('Error dibujando cuadrante:', err);
+    canvas.parentElement.innerHTML = '<div class="modal-nodata">Ocurrió un error al dibujar el gráfico.</div>';
+  }
 }
 
 // ══════════════════════════════════════════════════════════
