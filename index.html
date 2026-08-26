@@ -396,7 +396,7 @@ tbody tr.is-top td:first-child{box-shadow:inset 3px 0 0 var(--gold)}
           <div class="picks-hdr-row">
             <div>
               <div class="picks-title"><span class="dot"></span>Shortlist S4</div>
-              <div class="picks-sub">Los 3 mejores de cada Asset Class según el Score S4, sobre la selección filtrada actual — click en cualquiera para ver su detalle</div>
+              <div class="picks-sub">Los 10 mejores de cada Asset Class según el Score S4, sobre la selección filtrada actual — click en cualquiera para ver su detalle</div>
             </div>
           </div>
           <div id="picks-grid"></div>
@@ -1037,7 +1037,7 @@ function renderPicks(){
   const assets=[...new Set(pool.map(d=>d.asset))].filter(a=>ASSET_META[a]);
   let h='';
   assets.forEach(a=>{
-    const sub = pool.filter(d=>d.asset===a).slice(0,3);
+    const sub = pool.filter(d=>d.asset===a).slice(0,10);
     if(!sub.length) return;
     h += `<div class="short-blockhdr"><b>${a}</b><span>${pool.filter(d=>d.asset===a).length} fondos en la selección</span></div>`;
     h += sub.map((f,i)=>shortRowHtml(f,i+1)).join('');
