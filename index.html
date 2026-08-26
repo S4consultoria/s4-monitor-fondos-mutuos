@@ -99,18 +99,35 @@ body{
 
 /* ═══ TOP PICKS ═══ */
 .picks-wrap{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px 20px;margin-bottom:16px}
+.picks-hdr-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:2px}
 .picks-title{font-size:12.5px;font-weight:600;display:flex;align-items:center;gap:7px}
 .picks-title .dot{width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 6px var(--gold)}
 .picks-sub{color:var(--muted);font-size:10.5px;font-family:'IBM Plex Mono',monospace;margin-bottom:14px;margin-top:2px}
-.picks-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}
-.pick-card{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:13px 14px;position:relative;cursor:pointer;transition:.15s}
-.pick-card:hover{border-color:var(--gold)}
-.pick-card .pk-asset{font-size:9.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-family:'IBM Plex Mono',monospace;
-  display:flex;align-items:center;justify-content:space-between}
-.pick-card .pk-score{background:var(--gold);color:#0A1B2C;font-weight:700;font-size:10px;padding:1px 7px;border-radius:5px;font-family:'IBM Plex Mono',monospace}
-.pick-card .pk-name{font-size:12.5px;font-weight:500;margin:7px 0 5px;line-height:1.3;color:var(--txt)}
-.pick-card .pk-meta{display:flex;gap:10px;font-size:10.5px;color:var(--muted);font-family:'IBM Plex Mono',monospace;flex-wrap:wrap}
-.pick-card .pk-meta b.pos{color:var(--pos)}.pick-card .pk-meta b.neg{color:var(--neg)}
+.picks-toggle{display:flex;gap:6px}
+.picks-toggle button{background:var(--card2);border:1px solid var(--border);color:var(--muted);padding:6px 13px;border-radius:8px;
+  font-size:11px;font-family:'IBM Plex Mono',monospace;cursor:pointer}
+.picks-toggle button.on{background:var(--gold);color:#0A1B2C;border-color:var(--gold);font-weight:600}
+
+.short-row{display:flex;align-items:center;gap:14px;padding:10px 12px;border-radius:9px;cursor:pointer;transition:.15s;
+  border:1px solid transparent}
+.short-row:hover{background:var(--card2);border-color:var(--border)}
+.short-rank{font-family:'Poppins',sans-serif;font-weight:700;font-size:15px;color:var(--muted);width:26px;text-align:center;flex-shrink:0}
+.short-rank.r1{color:var(--gold)}.short-rank.r2{color:#C9C9C9}.short-rank.r3{color:#C08A4E}
+.short-score{background:var(--card2);border:1px solid var(--border);color:var(--gold);font-weight:700;font-size:12px;
+  padding:3px 9px;border-radius:6px;font-family:'IBM Plex Mono',monospace;flex-shrink:0;min-width:34px;text-align:center}
+.short-main{flex:1;min-width:0}
+.short-name{font-size:12.5px;font-weight:500;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.short-sub{display:flex;gap:8px;align-items:center;margin-top:2px;flex-wrap:wrap}
+.short-sub .sadmin{color:var(--muted);font-size:10px;font-family:'IBM Plex Mono',monospace}
+.short-tag{font-size:9.5px;padding:1px 7px;border-radius:4px;font-family:'IBM Plex Mono',monospace;background:var(--card2);color:var(--muted);border:1px solid var(--border)}
+.short-stats{display:flex;gap:16px;flex-shrink:0;font-family:'IBM Plex Mono',monospace;font-size:11.5px}
+.short-stats .st{display:flex;flex-direction:column;align-items:flex-end;min-width:52px}
+.short-stats .st .sl{font-size:8.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.short-blockhdr{display:flex;align-items:center;gap:8px;margin:16px 0 6px;padding-top:10px;border-top:1px solid var(--border)}
+.short-blockhdr:first-child{margin-top:0;padding-top:0;border-top:none}
+.short-blockhdr b{font-size:11.5px;color:var(--gold);text-transform:uppercase;letter-spacing:.05em;font-family:'IBM Plex Mono',monospace}
+.short-blockhdr span{color:var(--muted);font-size:10px;font-family:'IBM Plex Mono',monospace}
+@media(max-width:900px){ .short-stats{display:none} }
 
 /* ═══ LAYOUT ═══ */
 .main{display:grid;grid-template-columns:258px 1fr;gap:18px;align-items:start}
@@ -335,9 +352,17 @@ tbody tr.is-top td:first-child{box-shadow:inset 3px 0 0 var(--gold)}
   <div class="asset-row" id="asset-cards"></div>
 
   <div class="picks-wrap">
-    <div class="picks-title"><span class="dot"></span>Top Pick por Asset Class</div>
-    <div class="picks-sub">Mejor fondo de cada clase según el Score S4 — click en una tarjeta para ver su detalle</div>
-    <div class="picks-grid" id="picks-grid"></div>
+    <div class="picks-hdr-row">
+      <div>
+        <div class="picks-title"><span class="dot"></span>Shortlist S4</div>
+        <div class="picks-sub" id="short-sub">Los fondos mejor posicionados según el Score S4, sobre la selección filtrada actual — click en cualquiera para ver su detalle</div>
+      </div>
+      <div class="picks-toggle">
+        <button class="on" id="short-btn-flat" onclick="setShortMode('flat')">Top 10 General</button>
+        <button id="short-btn-block" onclick="setShortMode('block')">Por Asset Class</button>
+      </div>
+    </div>
+    <div id="picks-grid"></div>
   </div>
 
   <div class="main">
@@ -981,26 +1006,58 @@ function toggleAssetCard(el, asset){
 }
 
 // ══════════════════════════════════════════════════════════
-// TOP PICKS
+// SHORTLIST S4 — Top 10 general o agrupado por Asset Class,
+// siempre sobre la selección filtrada actual (respeta filtros y búsqueda)
 // ══════════════════════════════════════════════════════════
-function renderPicks(){
-  const assets=[...new Set(DATA.map(d=>d.asset))].filter(a=>ASSET_META[a]);
-  let h='';
-  assets.forEach(a=>{
-    const sub = DATA.filter(d=>d.asset===a && d.score!=null).sort((x,y)=>y.score-x.score);
-    if(!sub.length) return;
-    const top = sub[0];
-    h+=`<div class="pick-card" onclick="openModal('${top.nombre.replace(/'/g,"\\'")}')">
-      <div class="pk-asset">${a}<span class="pk-score">${top.score.toFixed(0)}</span></div>
-      <div class="pk-name">${top.nombre}</div>
-      <div class="pk-meta">
-        <span>Rent: <b class="${top.rentProm>=0?'pos':'neg'}">${top.rentProm>=0?'+':''}${top.rentProm.toFixed(1)}%</b></span>
-        <span>Riesgo: <b>${top.riesgo!=null?top.riesgo.toFixed(1)+'%':'—'}</b></span>
-        <span>Com: <b>${top.comision!=null?top.comision.toFixed(2)+'%':'—'}</b></span>
+let shortMode = 'flat';
+function setShortMode(mode){
+  shortMode = mode;
+  document.getElementById('short-btn-flat').classList.toggle('on', mode==='flat');
+  document.getElementById('short-btn-block').classList.toggle('on', mode==='block');
+  document.getElementById('short-sub').textContent = mode==='flat'
+    ? 'Los 10 fondos mejor posicionados según el Score S4, sobre la selección filtrada actual — click para ver el detalle'
+    : 'Los 3 mejores de cada Asset Class según el Score S4, sobre la selección filtrada actual — click para ver el detalle';
+  renderPicks();
+}
+function shortRowHtml(f, rank){
+  const safeName = f.nombre.replace(/'/g,"\\'");
+  const rankCls = rank<=3 ? ' r'+rank : '';
+  return `<div class="short-row" onclick="openModal('${safeName}')">
+    <div class="short-rank${rankCls}">${rank}</div>
+    <div class="short-score">${f.score!=null?f.score.toFixed(0):'—'}</div>
+    <div class="short-main">
+      <div class="short-name">${f.nombre}</div>
+      <div class="short-sub">
+        <span class="sadmin">${f.admin}</span>
+        <span class="short-tag">${f.asset}</span>
+        <span class="short-tag">${f.moneda}</span>
       </div>
-    </div>`;
-  });
-  document.getElementById('picks-grid').innerHTML = h || '<div class="mute" style="padding:8px 0">Sin datos suficientes aún.</div>';
+    </div>
+    <div class="short-stats">
+      <div class="st"><span class="sl">Rent</span><b class="${f.rentProm>=0?'pos':'neg'}">${f.rentProm!=null?(f.rentProm>=0?'+':'')+f.rentProm.toFixed(1)+'%':'—'}</b></div>
+      <div class="st"><span class="sl">Riesgo</span><span>${f.riesgo!=null?f.riesgo.toFixed(1)+'%':'—'}</span></div>
+      <div class="st"><span class="sl">Com.</span><span>${f.comision!=null?f.comision.toFixed(2)+'%':'—'}</span></div>
+    </div>
+  </div>`;
+}
+function renderPicks(){
+  const pool = getFiltered().filter(d=>d.score!=null).sort((a,b)=>b.score-a.score);
+  const grid = document.getElementById('picks-grid');
+  if(!pool.length){ grid.innerHTML = '<div class="mute" style="padding:8px 0">Sin datos suficientes con los filtros actuales.</div>'; return; }
+
+  if(shortMode==='flat'){
+    grid.innerHTML = pool.slice(0,10).map((f,i)=>shortRowHtml(f,i+1)).join('');
+  } else {
+    const assets=[...new Set(pool.map(d=>d.asset))].filter(a=>ASSET_META[a]);
+    let h='';
+    assets.forEach(a=>{
+      const sub = pool.filter(d=>d.asset===a).slice(0,3);
+      if(!sub.length) return;
+      h += `<div class="short-blockhdr"><b>${a}</b><span>${pool.filter(d=>d.asset===a).length} fondos en la selección</span></div>`;
+      h += sub.map((f,i)=>shortRowHtml(f,i+1)).join('');
+    });
+    grid.innerHTML = h;
+  }
 }
 
 // ══════════════════════════════════════════════════════════
