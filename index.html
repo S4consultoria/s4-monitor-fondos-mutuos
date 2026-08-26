@@ -351,20 +351,6 @@ tbody tr.is-top td:first-child{box-shadow:inset 3px 0 0 var(--gold)}
 
   <div class="asset-row" id="asset-cards"></div>
 
-  <div class="picks-wrap">
-    <div class="picks-hdr-row">
-      <div>
-        <div class="picks-title"><span class="dot"></span>Shortlist S4</div>
-        <div class="picks-sub" id="short-sub">Los fondos mejor posicionados según el Score S4, sobre la selección filtrada actual — click en cualquiera para ver su detalle</div>
-      </div>
-      <div class="picks-toggle">
-        <button class="on" id="short-btn-flat" onclick="setShortMode('flat')">Top 10 General</button>
-        <button id="short-btn-block" onclick="setShortMode('block')">Por Asset Class</button>
-      </div>
-    </div>
-    <div id="picks-grid"></div>
-  </div>
-
   <div class="main">
     <aside class="filters">
       <h2>Filtros</h2>
@@ -376,6 +362,7 @@ tbody tr.is-top td:first-child{box-shadow:inset 3px 0 0 var(--gold)}
     <section class="results">
       <div class="viewtabs">
         <div class="vtab on" id="tab-tabla" onclick="setView('tabla')">📋 Tabla</div>
+        <div class="vtab" id="tab-shortlist" onclick="setView('shortlist')">⭐ Shortlist</div>
         <div class="vtab" id="tab-analisis" onclick="setView('analisis')">📊 Análisis</div>
       </div>
 
@@ -401,6 +388,18 @@ tbody tr.is-top td:first-child{box-shadow:inset 3px 0 0 var(--gold)}
               <tbody id="tbody"></tbody>
             </table>
           </div>
+        </div>
+      </div>
+
+      <div id="view-shortlist" style="display:none">
+        <div class="picks-wrap">
+          <div class="picks-hdr-row">
+            <div>
+              <div class="picks-title"><span class="dot"></span>Shortlist S4</div>
+              <div class="picks-sub">Los 3 mejores de cada Asset Class según el Score S4, sobre la selección filtrada actual — click en cualquiera para ver su detalle</div>
+            </div>
+          </div>
+          <div id="picks-grid"></div>
         </div>
       </div>
 
@@ -1006,19 +1005,9 @@ function toggleAssetCard(el, asset){
 }
 
 // ══════════════════════════════════════════════════════════
-// SHORTLIST S4 — Top 10 general o agrupado por Asset Class,
+// SHORTLIST S4 — Top 3 de cada Asset Class según Score S4,
 // siempre sobre la selección filtrada actual (respeta filtros y búsqueda)
 // ══════════════════════════════════════════════════════════
-let shortMode = 'flat';
-function setShortMode(mode){
-  shortMode = mode;
-  document.getElementById('short-btn-flat').classList.toggle('on', mode==='flat');
-  document.getElementById('short-btn-block').classList.toggle('on', mode==='block');
-  document.getElementById('short-sub').textContent = mode==='flat'
-    ? 'Los 10 fondos mejor posicionados según el Score S4, sobre la selección filtrada actual — click para ver el detalle'
-    : 'Los 3 mejores de cada Asset Class según el Score S4, sobre la selección filtrada actual — click para ver el detalle';
-  renderPicks();
-}
 function shortRowHtml(f, rank){
   const safeName = f.nombre.replace(/'/g,"\\'");
   const rankCls = rank<=3 ? ' r'+rank : '';
@@ -1045,19 +1034,15 @@ function renderPicks(){
   const grid = document.getElementById('picks-grid');
   if(!pool.length){ grid.innerHTML = '<div class="mute" style="padding:8px 0">Sin datos suficientes con los filtros actuales.</div>'; return; }
 
-  if(shortMode==='flat'){
-    grid.innerHTML = pool.slice(0,10).map((f,i)=>shortRowHtml(f,i+1)).join('');
-  } else {
-    const assets=[...new Set(pool.map(d=>d.asset))].filter(a=>ASSET_META[a]);
-    let h='';
-    assets.forEach(a=>{
-      const sub = pool.filter(d=>d.asset===a).slice(0,3);
-      if(!sub.length) return;
-      h += `<div class="short-blockhdr"><b>${a}</b><span>${pool.filter(d=>d.asset===a).length} fondos en la selección</span></div>`;
-      h += sub.map((f,i)=>shortRowHtml(f,i+1)).join('');
-    });
-    grid.innerHTML = h;
-  }
+  const assets=[...new Set(pool.map(d=>d.asset))].filter(a=>ASSET_META[a]);
+  let h='';
+  assets.forEach(a=>{
+    const sub = pool.filter(d=>d.asset===a).slice(0,3);
+    if(!sub.length) return;
+    h += `<div class="short-blockhdr"><b>${a}</b><span>${pool.filter(d=>d.asset===a).length} fondos en la selección</span></div>`;
+    h += sub.map((f,i)=>shortRowHtml(f,i+1)).join('');
+  });
+  grid.innerHTML = h;
 }
 
 // ══════════════════════════════════════════════════════════
@@ -1284,8 +1269,10 @@ const ASSET_COLOR = {
 };
 function setView(v){
   document.getElementById('tab-tabla').classList.toggle('on', v==='tabla');
+  document.getElementById('tab-shortlist').classList.toggle('on', v==='shortlist');
   document.getElementById('tab-analisis').classList.toggle('on', v==='analisis');
   document.getElementById('view-tabla').style.display = v==='tabla' ? '' : 'none';
+  document.getElementById('view-shortlist').style.display = v==='shortlist' ? '' : 'none';
   document.getElementById('view-analisis').style.display = v==='analisis' ? '' : 'none';
   if(v==='analisis') renderChart();
 }
