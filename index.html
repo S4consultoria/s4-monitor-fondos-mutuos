@@ -573,10 +573,20 @@ function parseWorkbook(wb){
     riesgo: findCol(headerRaw, 'Nivel de Riesgo'),
     ytd: findColRegex(headerRaw, /^YTD\s*\d{4}$/i),
   };
-  // Columnas de valor cuota mensual: encabezado tipo Date
-  const monthIdx = [];
-  headerRaw.forEach((h, i)=>{ if(h instanceof Date) monthIdx.push(i); });
-  monthIdx.sort((a,b)=> headerRaw[a] - headerRaw[b]);
+  // Columnas de valor cuota mensual: encabezado tipo Date, o texto tipo "Sep-26" / "Sep 2026"
+  const MES_IDX = {ene:0,jan:0,feb:1,mar:2,abr:3,apr:3,may:4,jun:5,jul:6,ago:7,aug:7,sep:8,set:8,oct:9,nov:10,dic:11,dec:11};
+  const monthCols = [];
+  headerRaw.forEach((h, i)=>{
+    if(h instanceof Date){ monthCols.push({ci:i, date:h}); return; }
+    if(typeof h === 'string'){
+      const m = h.trim().toLowerCase().match(/^([a-záéíóú]{3,})[\s\-\/.]*(\d{2}|\d{4})$/);
+      if(m && MES_IDX[m[1].slice(0,3)] != null){
+        const yr = m[2].length===2 ? 2000+parseInt(m[2],10) : parseInt(m[2],10);
+        monthCols.push({ci:i, date:new Date(Date.UTC(yr, MES_IDX[m[1].slice(0,3)], 1))});
+      }
+    }
+  });
+  monthCols.sort((a,b)=> a.date - b.date);
   // Columnas de años cerrados: encabezado numérico entero tipo año (1990-2100)
   const yearIdx = [];
   headerRaw.forEach((h, i)=>{ if(typeof h === 'number' && Number.isInteger(h) && h>1990 && h<2100) yearIdx.push(i); });
@@ -589,11 +599,12 @@ function parseWorkbook(wb){
     const nomRaw = s(row[idx.nombre]);
     if(!nomRaw || nomRaw==='Nombre del Fondo') continue;
 
-    const serie = monthIdx.map(ci=>({
-      date: headerRaw[ci],
-      label: MESES_ES[headerRaw[ci].getUTCMonth()]+' '+String(headerRaw[ci].getUTCFullYear()).slice(2),
-      value: num(row[ci]),
-    })).filter(p=>p.value != null);
+    // Valor cuota <= 0 = mes aún sin dato publicado para ese fondo: se descarta el punto
+    const serie = monthCols.map(mc=>({
+      date: mc.date,
+      label: MESES_ES[mc.date.getUTCMonth()]+' '+String(mc.date.getUTCFullYear()).slice(2),
+      value: num(row[mc.ci]),
+    })).filter(p=>p.value != null && p.value > 0);
     // Si TODA la serie es 0 (sin tracking mensual para este fondo), se descarta
     const serieValida = serie.length>=2 && serie.some(p=>p.value>0) ? serie : [];
 
@@ -657,8 +668,9 @@ function enrichFund(f){
   // Rentabilidad mes a mes calculada de la propia serie de valor cuota
   f.monthlyReturns = [];
   for(let i=1;i<f.serie.length;i++){
-    const prev = f.serie[i-1].value, cur = f.serie[i].value;
-    if(prev>0) f.monthlyReturns.push({label:f.serie[i].label, ret:(cur/prev-1)*100});
+    const a = f.serie[i-1], b = f.serie[i];
+    const gap = (b.date.getUTCFullYear()-a.date.getUTCFullYear())*12 + (b.date.getUTCMonth()-a.date.getUTCMonth());
+    if(a.value>0 && gap===1) f.monthlyReturns.push({label:b.label, ret:(b.value/a.value-1)*100});
   }
 
   f.score = null; f.scoreTier = null; f.peerSize = 0;
