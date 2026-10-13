@@ -219,7 +219,9 @@ tbody tr.is-top td:first-child{box-shadow:inset 3px 0 0 var(--gold)}
 .an-legend{display:flex;gap:12px;flex-wrap:wrap;font-size:10.5px;font-family:'IBM Plex Mono',monospace;color:var(--muted)}
 .an-legend span{display:inline-flex;align-items:center;gap:5px}
 .an-legend i{width:8px;height:8px;border-radius:50%;display:inline-block}
-.an-toggle{display:flex;gap:6px;margin-bottom:14px}
+.an-toggle{display:flex;gap:6px;margin-bottom:10px;align-items:center}
+.an-toggle .an-tl{font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.06em;width:108px}
+.an-toggle button.dis{opacity:.4;cursor:not-allowed}
 .an-toggle button{background:var(--card2);border:1px solid var(--border);color:var(--muted);padding:6px 13px;border-radius:8px;
   font-size:11px;font-family:'IBM Plex Mono',monospace;cursor:pointer}
 .an-toggle button.on{background:var(--gold);color:#0A1B2C;border-color:var(--gold);font-weight:600}
@@ -417,8 +419,14 @@ tbody tr.is-top td:first-child{box-shadow:inset 3px 0 0 var(--gold)}
             <div class="an-legend" id="an-legend"></div>
           </div>
           <div class="an-toggle">
-            <button class="on" id="an-btn-riesgo" onclick="setQuadMode('riesgo')">Retorno vs. Riesgo</button>
-            <button id="an-btn-com" onclick="setQuadMode('comision')">Retorno vs. Comisión</button>
+            <span class="an-tl">Eje horizontal</span>
+            <button class="on" id="an-btn-riesgo" onclick="setQuadMode('riesgo')">Riesgo</button>
+            <button id="an-btn-com" onclick="setQuadMode('comision')">Comisión</button>
+          </div>
+          <div class="an-toggle" style="margin-bottom:14px">
+            <span class="an-tl">Eje vertical</span>
+            <button class="on" id="an-y-ytd" onclick="setQuadY('ytd')">YTD</button>
+            <button id="an-y-12m" onclick="setQuadY('12m')">12M</button>
           </div>
           <div class="chart-box"><canvas id="quadChart"></canvas></div>
           <div class="methodbox" id="methodtext">
@@ -485,6 +493,9 @@ const GITHUB_FILE_PATH = 'fondos.xlsx';
 const RAW_URL = `https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/${GITHUB_BRANCH}/${GITHUB_FILE_PATH}`;
 
 let DATA = [];
+// Con menos de 3 años cerrados el Nivel de Riesgo (desv. estándar de retornos anuales) no es confiable:
+// con 1 solo año da 0.00% y premiaba al fondo como si fuera el menos riesgoso. Se trata como 'sin dato'.
+const MIN_YEARS_RIESGO = 3;
 const MESES_ES = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
 
 function pct(v){
@@ -636,7 +647,7 @@ function parseWorkbook(wb){
       inicio: (aoaRaw[r] && aoaRaw[r][idx.inicio] instanceof Date) ? aoaRaw[r][idx.inicio] : null,
       ytd: pctClean(row[idx.ytd]),
       rentProm: pct(row[idx.rentprom]),
-      riesgo: pct(row[idx.riesgo]),
+      riesgo: years.length >= MIN_YEARS_RIESGO ? pct(row[idx.riesgo]) : null,
       patrimonio: numPatrimonio(row[idx.patrimonio]),
       serie: serieValida,
       years: years, // [{year:2025, ret:5.73}, ...] más reciente primero
@@ -683,6 +694,12 @@ function enrichFund(f){
     if(a.value>0 && gap===1) f.monthlyReturns.push({label:b.label, ret:(b.value/a.value-1)*100});
   }
 
+  f.ret12m = null;
+  if(f.serie.length >= 2){
+    const last = f.serie[f.serie.length-1];
+    const ref = f.serie.find(p=>p.date.getUTCFullYear()===last.date.getUTCFullYear()-1 && p.date.getUTCMonth()===last.date.getUTCMonth());
+    if(ref && ref.value>0) f.ret12m = (last.value/ref.value-1)*100;
+  }
   f.score = null; f.scoreTier = null; f.peerSize = 0;
 }
 
@@ -719,14 +736,14 @@ function computeScores(){
     const ytds = group.map(f=>f.ytd);
     const riesgos = group.map(f=>f.riesgo);
     const coms = group.map(f=>f.comision);
-    const cons = group.map(f=>f.consistencyRatio);
+    const cons = group.map(f=>f.years.length>=MIN_YEARS_RIESGO ? f.consistencyRatio : null);
     group.forEach(f=>{
       f.peerSize = group.length;
       const pRent = percentileOf(f.rentProm, rents);
       const pYtd = percentileOf(f.ytd, ytds);
       const pRiesgoInv = f.riesgo!=null ? 100-percentileOf(f.riesgo, riesgos) : 50;
       const pComInv = f.comision!=null ? 100-percentileOf(f.comision, coms) : 50;
-      const pCons = percentileOf(f.consistencyRatio, cons);
+      const pCons = (f.years.length>=MIN_YEARS_RIESGO && f.consistencyRatio!=null) ? percentileOf(f.consistencyRatio, cons) : 50;
       const score = pRent*w.rent + pYtd*w.ytd + pRiesgoInv*w.riesgo + pComInv*w.comision + pCons*w.consistencia;
       f.score = Math.round(score*10)/10;
       f.scoreTier = f.score>=70 ? 'Excelente (≥70)' : f.score>=50 ? 'Bueno (50-69)' : f.score>=30 ? 'Regular (30-49)' : 'Bajo (<30)';
@@ -819,7 +836,7 @@ async function loadData(isRefresh=false){
     DATA = parsed;
     computeScores();
     const ts = new Date().toLocaleString('es-PE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
-    try{ localStorage.setItem('ffmm_cache_v3', JSON.stringify({data:DATA, ts})); }catch(e){}
+    try{ localStorage.setItem('ffmm_cache_v4', JSON.stringify({data:DATA, ts})); }catch(e){}
     setPill('✓ Live · '+ts, 'ok');
     document.getElementById('hdr-n').textContent = DATA.length;
     document.getElementById('hdr-admin').textContent = new Set(DATA.map(d=>d.admin)).size;
@@ -828,7 +845,7 @@ async function loadData(isRefresh=false){
   }catch(e){
     console.warn('Load error:', e.message);
     try{
-      const cached = localStorage.getItem('ffmm_cache_v3');
+      const cached = localStorage.getItem('ffmm_cache_v4');
       if(cached){
         const {data,ts} = JSON.parse(cached);
         DATA = data.map(f=>{ if(f.inicio) f.inicio = new Date(f.inicio); return f; });
@@ -1296,6 +1313,7 @@ document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
 // ══════════════════════════════════════════════════════════
 let quadChart=null;
 let quadMode='riesgo';
+let quadY='ytd';
 const ASSET_COLOR = {
   'Caja y Efectivo':'#3E6B8C','Renta Fija':'#C9A227','Renta Variable':'#3C8C63',
   'Mixtos':'#5B6B72','Alternativos':'#A67C3D',
@@ -1309,15 +1327,33 @@ function setView(v){
   document.getElementById('view-analisis').style.display = v==='analisis' ? '' : 'none';
   if(v==='analisis') renderChart();
 }
-function setQuadMode(mode){
-  quadMode = mode;
-  document.getElementById('an-btn-riesgo').classList.toggle('on', mode==='riesgo');
-  document.getElementById('an-btn-com').classList.toggle('on', mode==='comision');
-  document.getElementById('an-title').textContent = mode==='riesgo' ? 'Retorno vs. Riesgo — fondos filtrados' : 'Retorno vs. Comisión — fondos filtrados';
-  document.getElementById('an-sub').textContent = mode==='riesgo'
-    ? 'Cada burbuja es un fondo. Eje X: Nivel de Riesgo. Eje Y: rentabilidad promedio. Tamaño: Score S4 (a mayor burbuja, mejor score). La esquina superior izquierda (alto retorno, bajo riesgo) es la zona ganadora.'
-    : 'Cada burbuja es un fondo. Eje X: comisión unificada. Eje Y: rentabilidad promedio. Tamaño: Score S4 (a mayor burbuja, mejor score). La esquina superior izquierda (alto retorno, bajo costo) es la zona ganadora.';
-  renderChart();
+function quadLabels(){
+  const ytdLbl = (DATA[0] && DATA[0].ytdLabel) ? DATA[0].ytdLabel : 'YTD';
+  return {
+    yShort: quadY==='ytd' ? 'YTD' : '12M',
+    yAxis: quadY==='ytd' ? ytdLbl+' (%)' : 'Rentabilidad 12M (%)',
+    xShort: quadMode==='riesgo' ? 'Riesgo' : 'Comisión',
+    xAxis: quadMode==='riesgo' ? 'Nivel de Riesgo (%)' : 'Comisión unificada (%)',
+  };
+}
+function updateQuadTexts(){
+  const L = quadLabels();
+  document.getElementById('an-btn-riesgo').classList.toggle('on', quadMode==='riesgo');
+  document.getElementById('an-btn-com').classList.toggle('on', quadMode==='comision');
+  document.getElementById('an-y-ytd').classList.toggle('on', quadY==='ytd');
+  document.getElementById('an-y-12m').classList.toggle('on', quadY==='12m');
+  const has12 = DATA.some(d=>d.ret12m!=null);
+  const b12 = document.getElementById('an-y-12m');
+  b12.classList.toggle('dis', !has12);
+  b12.title = has12 ? '' : 'Disponible cuando la serie de valor cuota tenga 13 meses o más';
+  document.getElementById('an-title').textContent = L.yShort+' vs. '+L.xShort+' — fondos filtrados';
+  document.getElementById('an-sub').textContent = 'Cada burbuja es un fondo. Eje X: '+L.xAxis.replace(' (%)','')+'. Eje Y: '+L.yAxis.replace(' (%)','')+'. Tamaño: Score S4 (a mayor burbuja, mejor score). La esquina superior izquierda (alto retorno, bajo '+(quadMode==='riesgo'?'riesgo':'costo')+') es la zona ganadora.'
+    + (quadMode==='riesgo' ? ' Los fondos con menos de '+MIN_YEARS_RIESGO+' años cerrados no tienen Nivel de Riesgo confiable y no aparecen en este modo.' : '');
+}
+function setQuadMode(mode){ quadMode = mode; updateQuadTexts(); renderChart(); }
+function setQuadY(m){
+  if(m==='12m' && !DATA.some(d=>d.ret12m!=null)) return;   // aún no hay 13 meses de valor cuota
+  quadY = m; updateQuadTexts(); renderChart();
 }
 function renderChart(){
   const canvas = document.getElementById('quadChart');
@@ -1326,13 +1362,16 @@ function renderChart(){
     canvas.parentElement.innerHTML = '<div class="modal-nodata">No se pudo cargar la librería de gráficos (Chart.js). Revisa tu conexión e intenta recargar la página.</div>';
     return;
   }
+  updateQuadTexts();
+  const L = quadLabels();
   const xField = quadMode==='riesgo' ? 'riesgo' : 'comision';
-  const rows = getFiltered().filter(d=>d[xField]!=null && d.rentProm!=null);
+  const yField = quadY==='ytd' ? 'ytd' : 'ret12m';
+  const rows = getFiltered().filter(d=>d[xField]!=null && d[yField]!=null);
   const assets = [...new Set(rows.map(d=>d.asset))];
   const datasets = assets.map(a=>({
     label:a,
     data: rows.filter(d=>d.asset===a).map(d=>({
-      x:d[xField], y:d.rentProm, r:d.score!=null ? Math.max(5,Math.min(28, 5+(d.score/100)*23)) : 5,
+      x:d[xField], y:d[yField], r:d.score!=null ? Math.max(5,Math.min(28, 5+(d.score/100)*23)) : 5,
       nombre:d.nombre, admin:d.admin, score:d.score, patrimonio:d.patrimonio,
     })),
     backgroundColor:(ASSET_COLOR[a]||'#8A9BAB')+'99',
@@ -1361,14 +1400,14 @@ function renderChart(){
           return [
             p.score!=null?`Score S4: ${p.score.toFixed(0)}`:'Score: sin dato',
             `${p.nombre}`,`${p.admin}`,
-            `Rent: ${p.y.toFixed(1)}% · ${quadMode==='riesgo'?'Riesgo':'Com'}: ${p.x.toFixed(2)}%`,
+            `${quadY==='ytd'?'YTD':'12M'}: ${p.y.toFixed(1)}% · ${quadMode==='riesgo'?'Riesgo':'Com'}: ${p.x.toFixed(2)}%`,
             p.patrimonio!=null?`Patrim: S/ ${(p.patrimonio/1e6).toFixed(1)}MM`:'',
           ].filter(Boolean);
         }}},
       },
       scales:{
         x:{title:{display:true,text:xField==='riesgo'?'Nivel de Riesgo (%)':'Comisión unificada (%)',color:'#8A9BAB'},grid:{color:'#213E56'},ticks:{color:'#8A9BAB'}},
-        y:{title:{display:true,text:'Rentabilidad promedio (%)',color:'#8A9BAB'},grid:{color:'#213E56'},ticks:{color:'#8A9BAB'}},
+        y:{title:{display:true,text:L.yAxis,color:'#8A9BAB'},grid:{color:'#213E56'},ticks:{color:'#8A9BAB'}},
       }
     }
   });
