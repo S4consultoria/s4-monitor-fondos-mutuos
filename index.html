@@ -1005,7 +1005,7 @@ const active={};
 FILTERS.forEach(f=>active[f.key]=new Set());
 
 function buildCols(){
-  const yearHeaders = DATA.length ? [...new Set(DATA.flatMap(f=>f.years.map(y=>y.year)))].sort((a,b)=>b-a).slice(0,2) : [];
+  const yearHeaders = DATA.length ? [...new Set(DATA.flatMap(f=>f.years.map(y=>y.year)))].sort((a,b)=>b-a) : [];   // todos los años cerrados de la matriz
   const cols = [
     {k:'nombre',      label:'Fondo',       cls:'fname', grp:''},
     {k:'score',       label:'Score',       score:true,  grp:''},
