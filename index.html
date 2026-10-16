@@ -333,8 +333,8 @@ tbody tr.is-top td:first-child{box-shadow:inset 3px 0 0 var(--gold)}
   <div class="vis-panel" id="vis-panel">
     <div class="vs"><div class="vl">Fondos selección</div><div class="vv" id="v-n">—</div>
       <div class="vs2" id="v-n2">de — totales</div><div class="vbar" id="vb-n" style="width:100%"></div></div>
-    <div class="vs"><div class="vl">Rent. promedio</div><div class="vv" id="v-rent">—</div>
-      <div class="vs2" id="v-rent2">anualizada histórica</div><div class="vbar" id="vb-rent" style="width:60%"></div></div>
+    <div class="vs"><div class="vl">YTD promedio</div><div class="vv" id="v-rent">—</div>
+      <div class="vs2" id="v-rent2">de la selección actual</div><div class="vbar" id="vb-rent" style="width:60%"></div></div>
     <div class="vs"><div class="vl">Mejor YTD 2026</div><div class="vv" id="v-ytd">—</div>
       <div class="vs2" id="v-ytd2">fondo más rentable año actual</div><div class="vbar" id="vb-ytd" style="width:70%"></div></div>
     <div class="vs"><div class="vl">Score prom.</div><div class="vv" id="v-score">—</div>
@@ -347,7 +347,7 @@ tbody tr.is-top td:first-child{box-shadow:inset 3px 0 0 var(--gold)}
     <div class="weights-hdr">
       <div class="weights-title"><span class="dot"></span>Personalizar Score S4</div>
     </div>
-    <div class="weights-sub">Mueve los sliders para simular otra prioridad — el ranking, los Top Pick y el gráfico se recalculan al instante. Se normalizan automáticamente, no necesitan sumar 100.</div>
+    <div class="weights-sub">Mueve los sliders para simular otra prioridad — el ranking, el Shortlist y el gráfico se recalculan al instante. Se normalizan solos, no necesitan sumar 100. El peso de 12M se activa cuando la serie de valor cuota llegue a 13 meses.</div>
     <div class="weights-grid" id="weights-grid"></div>
     <div class="weights-foot">
       <div class="weights-total">Suma actual: <b id="weights-total">100</b>% → normalizado a 100% automáticamente</div>
@@ -374,7 +374,7 @@ tbody tr.is-top td:first-child{box-shadow:inset 3px 0 0 var(--gold)}
 
       <div id="view-tabla">
         <div class="toolbar">
-          <div class="cnt-badge"><b id="cnt">0</b> fondos encontrados</div>
+          <div class="cnt-badge"><b id="cnt">0</b> fondos encontrados<span id="ref-note" style="margin-left:14px;color:var(--muted);font-size:10.5px"></span></div>
           <div class="grp-sel">Agrupar:
             <select id="groupBy" onchange="render()">
               <option value="">— sin agrupar —</option>
@@ -452,6 +452,8 @@ tbody tr.is-top td:first-child{box-shadow:inset 3px 0 0 var(--gold)}
     <div class="modal-title" id="m-nombre">—</div>
     <div class="modal-badges" id="m-badges"></div>
     <div class="modal-kpis" id="m-kpis"></div>
+    <div class="modal-subtitle" id="m-periods-title">Rentabilidad por período</div>
+    <div class="yr-grid" id="m-periods"></div>
     <div class="modal-subtitle">Rentabilidad anual</div>
     <div class="yr-grid" id="m-years"></div>
     <div class="modal-subtitle">Evolución de valor cuota</div>
@@ -694,13 +696,26 @@ function enrichFund(f){
     if(a.value>0 && gap===1) f.monthlyReturns.push({label:b.label, ret:(b.value/a.value-1)*100});
   }
 
-  f.ret12m = null;
-  if(f.serie.length >= 2){
-    const last = f.serie[f.serie.length-1];
-    const ref = f.serie.find(p=>p.date.getUTCFullYear()===last.date.getUTCFullYear()-1 && p.date.getUTCMonth()===last.date.getUTCMonth());
-    if(ref && ref.value>0) f.ret12m = (last.value/ref.value-1)*100;
-  }
+  f.ret1m = f.ret3m = f.ret6m = f.ret12m = null;   // se calculan en computePeriodReturns()
   f.score = null; f.scoreTier = null; f.peerSize = 0;
+}
+
+// ── Rentabilidad por período, calculada desde la serie de valor cuota ──
+// Referencia = último mes con datos en la matriz (hoy Sep 26). 1M/3M/6M/12M miran ese mes contra 1/3/6/12 meses antes.
+// Si un fondo no tiene el valor cuota de alguno de esos dos meses, ese período queda "sin dato".
+let REF_LABEL = '';
+function computePeriodReturns(){
+  const mi = d => d.getUTCFullYear()*12 + d.getUTCMonth();
+  let ref = -1;
+  DATA.forEach(f=>{ if(f.serie.length){ const m = mi(f.serie[f.serie.length-1].date); if(m>ref) ref=m; } });
+  if(ref<0) return;
+  REF_LABEL = MESES_ES[ref%12]+' '+String(Math.floor(ref/12)).slice(2);
+  DATA.forEach(f=>{
+    const map = {}; f.serie.forEach(p=>{ map[mi(p.date)] = p.value; });
+    const cur = map[ref];
+    const back = n => (cur>0 && map[ref-n]>0) ? (cur/map[ref-n]-1)*100 : null;
+    f.ret1m = back(1); f.ret3m = back(3); f.ret6m = back(6); f.ret12m = back(12);
+  });
 }
 
 // ── Score S4: percentil dentro de pares (misma Asset Class + Moneda) ──
@@ -713,39 +728,42 @@ function percentileOf(val, arr){
   return ((less + 0.5*eq)/n)*100;
 }
 // ── Pesos del Score S4, ajustables por el usuario en vivo ──
-const DEFAULT_WEIGHTS = {rent:30, ytd:15, riesgo:25, comision:20, consistencia:10};
+const DEFAULT_WEIGHTS = {r12:35, ytd:30, com:25, riesgo:10};
 let WEIGHTS = {...DEFAULT_WEIGHTS};
 const WEIGHT_LABELS = {
-  rent:'Rentabilidad Promedio', ytd:'Rentabilidad YTD', riesgo:'Nivel de Riesgo (invertido)',
-  comision:'Comisión (invertido)', consistencia:'Consistencia (años positivos)',
+  r12:'Rentabilidad 12M', ytd:'Rentabilidad YTD', com:'Comisión (invertida)', riesgo:'Nivel de Riesgo (invertido)',
 };
 
 function computeScores(){
-  const totalW = Object.values(WEIGHTS).reduce((a,b)=>a+b,0) || 1;
-  const w = {};
-  Object.keys(WEIGHTS).forEach(k=> w[k] = WEIGHTS[k]/totalW );
-
   const groups = {};
   DATA.forEach(f=>{
     const k = f.asset+'|'+f.moneda;
     (groups[k]=groups[k]||[]).push(f);
   });
   Object.values(groups).forEach(group=>{
-    if(group.length < 3){ group.forEach(f=>{ f.score=null; f.peerSize=group.length; }); return; }
-    const rents = group.map(f=>f.rentProm);
-    const ytds = group.map(f=>f.ytd);
-    const riesgos = group.map(f=>f.riesgo);
-    const coms = group.map(f=>f.comision);
-    const cons = group.map(f=>f.years.length>=MIN_YEARS_RIESGO ? f.consistencyRatio : null);
+    if(group.length < 3){ group.forEach(f=>{ f.score=null; f.scoreTier=null; f.peerSize=group.length; }); return; }
+    const arr = {
+      r12: group.map(f=>f.ret12m), ytd: group.map(f=>f.ytd),
+      com: group.map(f=>f.comision), riesgo: group.map(f=>f.riesgo),
+    };
+    const nDatos = k => arr[k].filter(x=>x!=null).length;
     group.forEach(f=>{
       f.peerSize = group.length;
-      const pRent = percentileOf(f.rentProm, rents);
-      const pYtd = percentileOf(f.ytd, ytds);
-      const pRiesgoInv = f.riesgo!=null ? 100-percentileOf(f.riesgo, riesgos) : 50;
-      const pComInv = f.comision!=null ? 100-percentileOf(f.comision, coms) : 50;
-      const pCons = (f.years.length>=MIN_YEARS_RIESGO && f.consistencyRatio!=null) ? percentileOf(f.consistencyRatio, cons) : 50;
-      const score = pRent*w.rent + pYtd*w.ytd + pRiesgoInv*w.riesgo + pComInv*w.comision + pCons*w.consistencia;
-      f.score = Math.round(score*10)/10;
+      const comp = {
+        r12:    f.ret12m!=null   ? percentileOf(f.ret12m, arr.r12) : null,
+        ytd:    f.ytd!=null      ? percentileOf(f.ytd, arr.ytd) : null,
+        com:    f.comision!=null ? 100-percentileOf(f.comision, arr.com) : null,
+        riesgo: f.riesgo!=null   ? 100-percentileOf(f.riesgo, arr.riesgo) : null,
+      };
+      // Solo cuentan los componentes que el fondo tiene Y que al menos 3 fondos de su grupo tienen.
+      // Un dato faltante no penaliza ni premia: el Score se calcula con lo disponible (pesos re-normalizados).
+      let num=0, den=0;
+      Object.keys(WEIGHTS).forEach(k=>{
+        if(comp[k]==null || nDatos(k)<3) return;
+        num += comp[k]*WEIGHTS[k]; den += WEIGHTS[k];
+      });
+      if(den<=0){ f.score=null; f.scoreTier=null; return; }
+      f.score = Math.round(num/den*10)/10;
       f.scoreTier = f.score>=70 ? 'Excelente (≥70)' : f.score>=50 ? 'Bueno (50-69)' : f.score>=30 ? 'Regular (30-49)' : 'Bajo (<30)';
     });
   });
@@ -802,14 +820,18 @@ function resetWeights(){
 function updateMethodText(){
   const el = document.getElementById('methodtext');
   if(!el) return;
-  const totalW = Object.values(WEIGHTS).reduce((a,b)=>a+b,0) || 1;
+  const has12 = DATA.some(d=>d.ret12m!=null);
+  const act = Object.keys(WEIGHTS).filter(k=> k!=='r12' || has12);
+  const totalW = act.reduce((a,k)=>a+WEIGHTS[k],0) || 1;
   const pct = k => Math.round(WEIGHTS[k]/totalW*100);
   el.innerHTML = `<b>Cómo se calcula el Score S4 (0–100):</b> cada fondo se compara solo contra sus pares directos
-    (misma Asset Class y misma Moneda). Dentro de ese grupo se calcula el percentil del fondo en 5 variables:
-    <b>rentabilidad promedio</b> (${pct('rent')}%), <b>rentabilidad YTD</b> (${pct('ytd')}%), <b>Nivel de Riesgo</b> (${pct('riesgo')}%, invertido — a menor riesgo, mejor puntaje),
-    <b>comisión</b> (${pct('comision')}%, invertido), y <b>consistencia</b> (${pct('consistencia')}% — % de años cerrados con retorno positivo). Grupos con menos de 3 fondos
-    no reciben Score por falta de pares comparables. Valores de retorno marcados como "sin dato" (ej. -100% exacto en fondos nuevos o vencidos)
-    se excluyen del cálculo para no distorsionar el ranking.`;
+    (misma Asset Class y misma Moneda). Dentro de ese grupo se calcula el percentil del fondo en:
+    <b>rentabilidad 12M</b> (${has12?pct('r12')+'%':'sin datos aún'}), <b>rentabilidad YTD</b> (${pct('ytd')}%),
+    <b>comisión</b> (${pct('com')}%, invertida — a menor comisión, mejor) y <b>Nivel de Riesgo</b> (${pct('riesgo')}%, invertido; solo fondos con ${MIN_YEARS_RIESGO}+ años cerrados).
+    Si a un fondo le falta un componente, no se le penaliza: el Score usa los componentes disponibles.
+    ${has12?'':'El componente 12M se activa solo cuando la serie de valor cuota llegue a 13 meses. '}
+    La rentabilidad promedio y la consistencia de años positivos ya no entran al Score porque distorsionan en fondos con poca historia.
+    Grupos con menos de 3 fondos no reciben Score.`;
 }
 
 // ══════════════════════════════════════════════════════════
@@ -834,9 +856,10 @@ async function loadData(isRefresh=false){
     const parsed = parseWorkbook(wb);
     if(parsed.length < 5) throw new Error('Solo '+parsed.length+' fondos válidos en el Excel');
     DATA = parsed;
+    computePeriodReturns();
     computeScores();
     const ts = new Date().toLocaleString('es-PE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
-    try{ localStorage.setItem('ffmm_cache_v4', JSON.stringify({data:DATA, ts})); }catch(e){}
+    try{ localStorage.setItem('ffmm_cache_v5', JSON.stringify({data:DATA, ts, ref:REF_LABEL})); }catch(e){}
     setPill('✓ Live · '+ts, 'ok');
     document.getElementById('hdr-n').textContent = DATA.length;
     document.getElementById('hdr-admin').textContent = new Set(DATA.map(d=>d.admin)).size;
@@ -845,9 +868,10 @@ async function loadData(isRefresh=false){
   }catch(e){
     console.warn('Load error:', e.message);
     try{
-      const cached = localStorage.getItem('ffmm_cache_v4');
+      const cached = localStorage.getItem('ffmm_cache_v5');
       if(cached){
-        const {data,ts} = JSON.parse(cached);
+        const {data,ts,ref} = JSON.parse(cached);
+        REF_LABEL = ref || '';
         DATA = data.map(f=>{ if(f.inicio) f.inicio = new Date(f.inicio); return f; });
         computeScores();
         setPill('⚠ Caché · '+ts,'loading');
@@ -922,12 +946,14 @@ function buildCols(){
     {k:'estrategia',  label:'Estrategia'},
     {k:'mercado',     label:'Mercado'},
     {k:'plazo',       label:'Plazo'},
-    {k:'rentProm',    label:'Rent.Prom', num:true, pct:true, color:true},
+    {k:'ret1m',       label:'1M',        num:true, pct:true, color:true},
+    {k:'ret3m',       label:'3M',        num:true, pct:true, color:true},
+    {k:'ret6m',       label:'6M',        num:true, pct:true, color:true},
+    {k:'ret12m',      label:'12M',       num:true, pct:true, color:true},
     {k:'ytd',         label:'YTD',       num:true, pct:true, color:true},
     ...yearHeaders.map(y=>({k:'year_'+y, label:String(y), num:true, pct:true, color:true, yearRef:y})),
     {k:'comision',    label:'Comis.',    num:true, pct:true},
     {k:'riesgo',      label:'Riesgo',    num:true, pct:true, riesgoCol:true},
-    {k:'eficiencia',  label:'Efic.',     eff:true},
     {k:'patrimonio',  label:'Patrim.(MM)', num:true, mm:true},
     {k:'estructura',  label:'Estructura'},
   ];
@@ -1010,7 +1036,7 @@ function buildAssetCards(){
   assets.forEach(a=>{
     const sub=DATA.filter(d=>d.asset===a);
     const n=sub.length;
-    const rents=sub.map(d=>d.rentProm).filter(x=>x!=null);
+    const rents=sub.map(d=>d.ytd).filter(x=>x!=null);
     const avg=rents.length?rents.reduce((s,x)=>s+x,0)/rents.length:0;
     const best=sub.filter(d=>d.score!=null).sort((a,b)=>b.score-a.score)[0];
     const {cls}=ASSET_META[a];
@@ -1018,7 +1044,7 @@ function buildAssetCards(){
     h+=`<div class="asset-card ${cls}" onclick="toggleAssetCard(this,'${a}')">
       <div class="ac-name">${a}</div>
       <div class="ac-n">${n}</div>
-      <div class="ac-rent ${avgClass}">${avg>=0?'+':''}${avg.toFixed(1)}% prom.</div>
+      <div class="ac-rent ${avgClass}">${avg>=0?'+':''}${avg.toFixed(1)}% YTD prom.</div>
       ${best?`<div class="ac-best">👑 ${best.nombre.substring(0,26)}…</div>`:''}
     </div>`;
   });
@@ -1066,7 +1092,10 @@ function shortRowHtml(f, rank, years){
       </div>
     </div>
     <div class="short-stats">
+      ${st('1M', pc(f.ret1m))}
+      ${st('3M', pc(f.ret3m))}
       ${st(ytdTxt, pc(f.ytd))}
+      ${st('12M', pc(f.ret12m))}
       ${yearStats}
       ${st('Riesgo', `<span>${f.riesgo!=null?f.riesgo.toFixed(1)+'%':'—'}</span>`)}
       ${st('Com.', `<span>${f.comision!=null?f.comision.toFixed(2)+'%':'—'}</span>`)}
@@ -1079,7 +1108,7 @@ function renderPicks(){
   if(!pool.length){ grid.innerHTML = '<div class="mute" style="padding:8px 0">Sin datos suficientes con los filtros actuales.</div>'; return; }
 
   const assets=[...new Set(pool.map(d=>d.asset))].filter(a=>ASSET_META[a]);
-  const shortYears=[...new Set(DATA.flatMap(f=>(f.yearsAll||[]).map(y=>y.year)))].sort((a,b)=>b-a).slice(0,3);
+  const shortYears=[...new Set(DATA.flatMap(f=>(f.yearsAll||[]).map(y=>y.year)))].sort((a,b)=>b-a).slice(0,1);
   let h='';
   assets.forEach(a=>{
     const sub = pool.filter(d=>d.asset===a).slice(0,10);
@@ -1095,7 +1124,7 @@ function renderPicks(){
 // ══════════════════════════════════════════════════════════
 function updateVisuals(rows){
   const n=rows.length, total=DATA.length;
-  const rents=rows.map(d=>d.rentProm).filter(x=>x!=null);
+  const rents=rows.map(d=>d.ytd).filter(x=>x!=null);
   const ytds=rows.map(d=>d.ytd).filter(x=>x!=null);
   const riesgos=rows.map(d=>d.riesgo).filter(x=>x!=null);
   const scores=rows.map(d=>d.score).filter(x=>x!=null);
@@ -1131,10 +1160,10 @@ function updateVisuals(rows){
     const ac=card.querySelector('.ac-name').textContent;
     const sub=rows.filter(d=>d.asset===ac);
     card.querySelector('.ac-n').textContent=sub.length;
-    const rr=sub.map(d=>d.rentProm).filter(x=>x!=null);
+    const rr=sub.map(d=>d.ytd).filter(x=>x!=null);
     const ag=rr.length?rr.reduce((s,x)=>s+x,0)/rr.length:null;
     const rentEl=card.querySelector('.ac-rent');
-    if(ag!=null){ rentEl.textContent=(ag>=0?'+':'')+ag.toFixed(1)+'% prom.'; rentEl.className='ac-rent '+(ag>=0?'pos':'neg'); }
+    if(ag!=null){ rentEl.textContent=(ag>=0?'+':'')+ag.toFixed(1)+'% YTD prom.'; rentEl.className='ac-rent '+(ag>=0?'pos':'neg'); }
     else { rentEl.textContent='—'; rentEl.className='ac-rent mute'; }
   });
 }
@@ -1198,6 +1227,7 @@ function render(){
   COLS = buildCols();
   const rows=getFiltered();
   document.getElementById('cnt').textContent=rows.length;
+  document.getElementById('ref-note').textContent = REF_LABEL ? '· 1M/3M/6M/12M al cierre de '+REF_LABEL+' · YTD según la matriz' : '';
   buildHead();
   updateVisuals(rows);
   const gb=document.getElementById('groupBy').value;
@@ -1211,9 +1241,9 @@ function render(){
     if(gb==='plazo')order=PLAZO_ORDER.filter(x=>groups[x]); else order.sort();
     order.forEach(g=>{
       const gr=sortData(groups[g]);
-      const withRent=gr.filter(x=>x.rentProm!=null);
-      const avg=withRent.length?withRent.reduce((s,x)=>s+x.rentProm,0)/withRent.length:0;
-      body+=`<tr class="grouphdr"><td colspan="${COLS.length}">${g}<span class="gc">${gr.length} fondos · rent.prom ${avg.toFixed(2)}%</span></td></tr>`;
+      const withRent=gr.filter(x=>x.ytd!=null);
+      const avg=withRent.length?withRent.reduce((s,x)=>s+x.ytd,0)/withRent.length:0;
+      body+=`<tr class="grouphdr"><td colspan="${COLS.length}">${g}<span class="gc">${gr.length} fondos · YTD prom. ${avg.toFixed(2)}%</span></td></tr>`;
       gr.forEach(d=>{body+=rowHtml(d)});
     });
   } else {
@@ -1244,10 +1274,12 @@ function openModal(nombre){
   const rankTxt = f.score!=null ? '#'+(1+peers.filter(d=>d.score>f.score).length)+' de '+peers.length : '—';
   const yrCell = (label,v)=>`<div class="yr"><div class="l">${label}</div><div class="v ${v==null?'mute':(v>=0?'pos':'neg')}">${v==null?'—':(v>=0?'+':'')+v.toFixed(2)+'%'}</div></div>`;
   const yrList = (f.yearsAll && f.yearsAll.length) ? f.yearsAll : (f.years||[]).slice().sort((a,b)=>a.year-b.year);
+  document.getElementById('m-periods-title').textContent = 'Rentabilidad por período' + (REF_LABEL ? ' (al cierre de '+REF_LABEL+')' : '');
+  document.getElementById('m-periods').innerHTML = yrCell('1M',f.ret1m)+yrCell('3M',f.ret3m)+yrCell('6M',f.ret6m)+yrCell('12M',f.ret12m)+yrCell(f.ytdLabel||'YTD', f.ytd);
   document.getElementById('m-years').innerHTML = yrList.map(y=>yrCell(y.year,y.ret)).join('') + yrCell(f.ytdLabel||'YTD', f.ytd);
   document.getElementById('m-kpis').innerHTML = `
     <div class="mk"><div class="l">Score S4</div><div class="v" style="color:var(--gold)">${f.score!=null?f.score.toFixed(0):'—'}</div></div>
-    <div class="mk"><div class="l">Rent. Promedio</div><div class="v ${f.rentProm>=0?'pos':'neg'}">${f.rentProm!=null?(f.rentProm>=0?'+':'')+f.rentProm.toFixed(2)+'%':'—'}</div></div>
+    <div class="mk"><div class="l">Valor cuota</div><div class="v" style="font-size:15px">${f.serie.length?f.serie[f.serie.length-1].value.toFixed(4):'—'}</div><div style="font-size:9.5px;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-top:1px">${f.serie.length?f.serie[f.serie.length-1].label:''}</div></div>
     <div class="mk"><div class="l">YTD</div><div class="v ${f.ytd>=0?'pos':'neg'}">${f.ytd!=null?(f.ytd>=0?'+':'')+f.ytd.toFixed(2)+'%':'—'}</div></div>
     <div class="mk"><div class="l">Nivel de Riesgo</div><div class="v">${f.riesgo!=null?f.riesgo.toFixed(2)+'%':'—'}</div></div>
     <div class="mk"><div class="l">Comisión</div><div class="v">${f.comision!=null?f.comision.toFixed(2)+'%':'—'}</div></div>
@@ -1426,7 +1458,7 @@ function tick(){
 }
 function boot(){
   loadData(false).then(ok=>{
-    if(ok){ buildFilters(); buildAssetCards(); render(); renderPicks(); }
+    if(ok){ buildFilters(); buildAssetCards(); render(); renderPicks(); updateMethodText(); }
     tick();
   });
   setInterval(tick, 30000);
