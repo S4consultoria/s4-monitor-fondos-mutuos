@@ -403,6 +403,11 @@ tbody tr:hover td:first-child{background:#132b42}
 .hist-tg span{font-size:11px;color:var(--muted);margin-right:4px}
 .hist-tg button{background:var(--card);border:1px solid var(--border2);color:var(--muted);font-family:'Poppins',sans-serif;font-size:11px;padding:5px 11px;border-radius:7px;cursor:pointer}
 .hist-tg button.on{background:var(--gold);border-color:var(--gold);color:#0A1B2C;font-weight:600}
+
+.hist-tbl .hfund{width:280px;min-width:280px;max-width:280px}
+.hist-tbl .h12{position:sticky;left:280px;z-index:2;min-width:84px;background:#16283a;border-left:1px solid rgba(201,162,39,.35);border-right:1px solid rgba(201,162,39,.35);font-weight:700;font-size:12.5px}
+.hist-tbl th.h12{z-index:3;color:var(--gold);background:#1B2D3F;font-size:11px}
+.hist-tbl tr.hrow:hover td.h12{background:#1a3248}
 </style>
 </head>
 <body>
@@ -1434,6 +1439,11 @@ function histPct(v, scale){
   const bg = (!z && a>=0.02) ? ` style="background:${v>=0?'rgba(60,140,99,':'rgba(181,75,75,'}${a.toFixed(3)})"` : '';
   return `<td class="${z?'':(v>=0?'pos':'neg')}"${bg}>${z?'0.00':(v>=0?'+':'')+t}%</td>`;
 }
+function h12Cell(v){
+  if(v==null || !isFinite(v)) return '<td class="h12 mute">—</td>';
+  const t=v.toFixed(2); const z=(t==='0.00'||t==='-0.00');
+  return `<td class="h12 ${z?'':(v>=0?'pos':'neg')}">${z?'0.00':(v>=0?'+':'')+t}%</td>`;
+}
 function histMonthly(serie, mi){
   const m={}; serie.forEach(p=>{ m[p.mi!=null?p.mi:(p.date.getUTCFullYear()*12+p.date.getUTCMonth())]=p.value; });
   return (m[mi]>0 && m[mi-1]>0) ? (m[mi]/m[mi-1]-1)*100 : null;
@@ -1469,11 +1479,11 @@ function renderHistorico(){
     const [asset,mon]=key.split('|');
     const funds=groups[key].slice().sort((a,b)=>(b.score==null?-1:b.score)-(a.score==null?-1:a.score));
     const scale=HIST_SCALE[asset.toLowerCase()]||5;
-    const th='<th class="hfund">Fondo</th>'+months.map(mi=>`<th>${histLabel(mi)}</th>`).join('');
+    const th='<th class="hfund">Fondo</th><th class="h12">12M</th>'+months.map(mi=>`<th>${histLabel(mi)}</th>`).join('');
     let tb='';
     funds.forEach(f=>{
       const nm=String(f.nombre).replace(/"/g,'&quot;');
-      tb+=`<tr class="hrow" data-n="${nm}" onclick="openModal(this.dataset.n)"><td class="hfund">${f.nombre}<span class="hsub">${f.admin}</span></td>${months.map(mi=>histPct(histMonthly(f.serie,mi),scale)).join('')}</tr>`;
+      tb+=`<tr class="hrow" data-n="${nm}" onclick="openModal(this.dataset.n)"><td class="hfund">${f.nombre}<span class="hsub">${f.admin}</span></td>${h12Cell(f.ret12m)}${months.map(mi=>histPct(histMonthly(f.serie,mi),scale)).join('')}</tr>`;
     });
     const shown = histAll ? funds : funds.slice(0,10);
     html+=`<div class="hist-block"><div class="hist-bh"><b>${asset} · ${mon}</b><span>${funds.length} fondos</span></div>`+
