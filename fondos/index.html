@@ -642,13 +642,10 @@ function checkPass(){
 document.getElementById('passInp').addEventListener('keydown', e=>{ if(e.key==='Enter') checkPass(); });
 
 // ══════════════════════════════════════════════════════════
-// FUENTE DE DATOS — Excel en GitHub
+// FUENTE DE DATOS — Excel publicado junto con la web
 // ══════════════════════════════════════════════════════════
-const GITHUB_USER = 'S4consultoria';
-const GITHUB_REPO = 's4-monitor-fondos-mutuos';
-const GITHUB_BRANCH = 'main';
-const GITHUB_FILE_PATH = 'fondos.xlsx';
-const RAW_URL = `https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/${GITHUB_BRANCH}/${GITHUB_FILE_PATH}`;
+// El Excel se publica junto con la página en Cloudflare Pages (misma carpeta /fondos/).
+const RAW_URL = '/fondos/fondos.xlsx';
 
 let DATA = [];
 // Con menos de 3 años cerrados el Nivel de Riesgo (desv. estándar de retornos anuales) no es confiable:
@@ -1009,7 +1006,7 @@ async function loadData(isRefresh=false){
     const ctrl=new AbortController();
     setTimeout(()=>ctrl.abort(), 12000);
     const resp = await fetch(RAW_URL+'?t='+Date.now(), {signal:ctrl.signal});
-    if(!resp.ok) throw new Error('HTTP '+resp.status+' — revisa GITHUB_USER/REPO/FILE_PATH');
+    if(!resp.ok) throw new Error('HTTP '+resp.status+' — revisa que /fondos/fondos.xlsx esté publicado');
     const buf = await resp.arrayBuffer();
     const wb = XLSX.read(buf, {type:'array', cellDates:true});
     const parsed = parseWorkbook(wb);
@@ -1049,9 +1046,9 @@ function showErrorBox(msg){
     'color:#EDEAE3;box-shadow:0 20px 60px rgba(0,0,0,.6);line-height:1.7';
   const safe = String(msg).replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
   box.innerHTML = '<b style="color:#B54B4B;font-size:15px">⚠ Error de conexión</b><br><br>'+
-    'No se pudo cargar el Excel desde GitHub.<br>Error: '+safe+
-    '<br><br><span style="color:#8A9BAB;font-size:11.5px">Revisa que GITHUB_USER, GITHUB_REPO y GITHUB_FILE_PATH '+
-    'apunten al archivo correcto y que el repo sea público.</span><br><br>';
+    'No se pudo cargar el Excel del monitor.<br>Error: '+safe+
+    '<br><br><span style="color:#8A9BAB;font-size:11.5px">Revisa que fondos/fondos.xlsx esté en el repo '+
+    'y que el último deploy de Cloudflare Pages haya terminado.</span><br><br>';
   const btn = document.createElement('button');
   btn.textContent = '↺ Reintentar';
   btn.style.cssText = 'background:#C9A227;color:#0A1B2C;border:none;padding:9px 18px;border-radius:8px;'+
