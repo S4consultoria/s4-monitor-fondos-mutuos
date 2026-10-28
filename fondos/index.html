@@ -453,6 +453,18 @@ tbody tr:hover td:first-child{background:#132b42}
 .cs-btn.pri:hover{color:#0A1B2C;opacity:.9}
 .cs-tag{font-size:9px;color:var(--orange);border:1px solid var(--orange);border-radius:5px;padding:1px 6px;margin-left:6px;vertical-align:middle}
 .cs-warn{font-family:'Poppins',sans-serif;background:rgba(166,124,61,.10);border:1px solid rgba(166,124,61,.35);border-radius:9px;padding:10px 14px;font-size:11.5px;color:var(--txt);margin:0 0 16px;line-height:1.55}
+.cs-comp{margin:0 0 18px}
+.cs-comp .hd{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin:0 0 10px}
+.cs-comp .hd h4{margin:0}
+.cs-stale{font-size:9px;color:var(--orange);border:1px solid var(--orange);border-radius:5px;padding:1px 6px}
+.cs-meta{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:10.5px;color:var(--muted);margin:0 0 12px;font-family:'IBM Plex Mono',monospace}
+.cs-bar{display:grid;grid-template-columns:minmax(110px,40%) 1fr 46px;align-items:center;gap:10px;margin:0 0 6px;font-size:11px}
+.cs-bar .n{color:var(--txt);opacity:.9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cs-bar .t{height:6px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden}
+.cs-bar .t i{display:block;height:100%;background:var(--gold);border-radius:3px}
+.cs-bar .p{text-align:right;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--muted)}
+.cs-sub{font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:14px 0 6px}
+.cs-top{font-size:11px;color:var(--muted);line-height:1.6;margin:0}
 .cs-foot{color:var(--muted);font-size:10.5px;line-height:1.6;margin-top:8px}
 </style>
 </head>
@@ -1559,11 +1571,10 @@ function renderHistorico(){
 
 // ══════════════════════════════════════════════════════════
 // VISTA CARTERA S4 — fondos donde S4 tiene posiciones vía clientes
-// Las cifras salen de la matriz (DATA). Los textos y links se editan aquí.
+// Cifras: matriz (DATA) · links: factsheets_s4.json · composición y textos: cartera.json
 //   match : nombre del fondo en fondos.xlsx (sin match → se muestra sin cifras)
 //   fs    : links. st:'ok' = verificado · st:'tbc' = por confirmar
-//   comp  : composición / en qué invierte (solo lo respaldado en prospecto o ficha pública)
-//   arq   : arquetipo de perspectiva 12M (ver ARQ_S4)
+//   Textos, composición y perspectiva 12M: salen de /cartera.json (clave = fid)
 // ══════════════════════════════════════════════════════════
 const MACRO_S4 = {
   fecha: '20-oct-26',
@@ -1575,88 +1586,50 @@ const MACRO_S4 = {
   fuente: 'Fuentes: FOMC / BBVA Research (sep-26), BCRP y prensa local (oct-26). Actualizar a mano en MACRO_S4 después de cada reunión.'
 };
 
-const ARQ_S4 = {
-  carry_pen: {
-    base: 'Retorno cercano a las tasas de depósitos en soles y baja volatilidad. Con la referencia del BCRP en 4,25% y presión inflacionaria, el rendimiento corriente se mantiene o sube levemente si el BCRP ajusta al alza.',
-    riesgos: 'Menores tasas si la inflación converge y el BCRP recorta. Riesgo crediticio puntual de emisores locales.',
-    vigilar: 'Decisión mensual del BCRP · inflación interanual · tasas de depósitos a 30–180 días.'
-  },
-  carry_usd: {
-    base: 'Retorno anclado a las tasas de corto plazo en dólares. Con la Fed en 3,75–4,00% y la mediana del SEP en 4,1% para fin de 2026, el carry en USD se mantiene o sube levemente.',
-    riesgos: 'Recortes de la Fed si el mercado laboral se debilita. Ampliación de spreads en emisores corporativos.',
-    vigilar: 'Reunión FOMC del 27–28 oct · rendimiento del Tesoro a 2 años · spreads de crédito de corto plazo.'
-  },
-  dur_pen: {
-    base: 'Retorno compuesto por carry y variación de precios. Un alza de tasas locales resta valor a una cartera de mayor duración en el corto plazo; el carry lo compensa de forma gradual.',
-    riesgos: 'Alza de la tasa BCRP o de la curva de soberanos. Ampliación de spreads corporativos. Volatilidad mensual mayor que en corto plazo.',
-    vigilar: 'Curva de soberanos en soles · expectativas de tasa BCRP · spreads de emisores locales.'
-  },
-  dur_usd: {
-    base: 'Retorno depende del carry de bonos corporativos y de las tasas del Tesoro a plazos medios. El sesgo restrictivo de la Fed añade presión sobre precios; una duración acotada reduce esa sensibilidad.',
-    riesgos: 'Alza de tasas del Tesoro. Ampliación de spreads corporativos latinoamericanos. Moneda local de los emisores.',
-    vigilar: 'Rendimiento del Tesoro a 5 años · spreads IG/HY latam · reunión FOMC.'
-  },
-  hy: {
-    base: 'Mayor carry con volatilidad superior a grado de inversión. El retorno depende de los spreads high yield y del ciclo de crédito; tasas más altas elevan el costo de refinanciamiento de los emisores.',
-    riesgos: 'Defaults, ampliación de spreads, menor liquidez en episodios de estrés.',
-    vigilar: 'Spread HY latam · tasa de default · reunión FOMC · precio de commodities.'
-  },
-  eq: {
-    base: 'Retorno sin ancla de carry; depende de commodities, tipo de cambio y flujos hacia la región. Rango de resultados amplio a 12 meses.',
-    riesgos: 'Dólar fuerte, caída de commodities, riesgo fiscal y político en la región.',
-    vigilar: 'Dólar (DXY) · cobre y otros commodities · resultados de elecciones y fiscal en la región.'
-  },
-  dist: {
-    base: 'Los flujos periódicos dependen de la mezcla de renta fija y variable de los fondos subyacentes. El retorno total varía con tasas y mercados globales.',
-    riesgos: 'Distribución superior al retorno devengado puede reducir el capital. Doble capa de comisiones en fondos de fondos.',
-    vigilar: 'Asignación vigente por fondo subyacente · política de distribución.'
-  }
-};
-
 const CARTERA_S4 = [
-  {id:'bbva-cp-pen', fid:'bbva_renta_corto_plazo_pen', label:'BBVA Renta Corto Plazo Soles', match:'BBVA RENTA CORTO PLAZO S/. BBVA SAF', asset:'Renta Fija', arq:'carry_pen',
-   comp:'Fondo mutuo de deuda de corto plazo en soles. Invierte en instrumentos de deuda, predominantemente en soles, con núcleo en calificaciones AAA–AA- (CP-1) o riesgo Estado Peruano. Los tramos de menor calificación tienen límites definidos en el reglamento. Referencia: índice de depósitos a plazo en soles.',
+  {id:'bbva-cp-pen', fid:'bbva_renta_corto_plazo_pen', label:'BBVA Renta Corto Plazo Soles', match:'BBVA RENTA CORTO PLAZO S/. BBVA SAF', asset:'Renta Fija',
    fs:[{l:'Fondos BBVA (fichas)', u:'https://fondos.bbva.pe/', st:'ok', pri:1},
        {l:'Prospecto', u:'https://fondos.bbva.pe/content/dam/public-web/fondos-peru/documents/personas/avisos-importantes/2-Prospecto-Renta-Corto-Plazo-Soles-oct.pdf', st:'ok'}]},
-  {id:'bbva-cp-usd', fid:'bbva_renta_corto_plazo_usd', label:'BBVA Renta Corto Plazo Dólares', match:'BBVA RENTA CORTO PLAZO $ BBVA SAF', asset:'Renta Fija', arq:'carry_usd',
-   comp:'Fondo mutuo de deuda de corto plazo en dólares. Invierte en instrumentos de deuda, predominantemente en dólares, en el mercado local e internacional. Puede destinar hasta 20% del activo a cuotas de otros fondos. Referencia: depósitos a plazo en dólares y un índice de bonos latinoamericanos en dólares.',
+  {id:'bbva-cp-usd', fid:'bbva_renta_corto_plazo_usd', label:'BBVA Renta Corto Plazo Dólares', match:'BBVA RENTA CORTO PLAZO $ BBVA SAF', asset:'Renta Fija',
    fs:[{l:'Fondos BBVA (fichas)', u:'https://fondos.bbva.pe/', st:'ok', pri:1},
        {l:'Prospecto', u:'https://fondos.bbva.pe/content/dam/public-web/fondos-peru/documents/personas/avisos-importantes/2-Prospecto-BBVA-Renta-Corto-Plazo-Dolares-oct.pdf', st:'ok'}]},
-  {id:'bbva-distrib', fid:'bbva_fdf_distributivo', label:'BBVA FdF Distributivo Estratégico Global', match:'', asset:'Mixtos', arq:'dist',
-   comp:'Fondo de fondos con objetivo distributivo. La asignación por fondo subyacente y la política de distribución vigente constan en la ficha de la gestora.',
-   falta:'Este fondo no está en la matriz (los distributivos se retiraron en octubre). Para ver cifras hay que volver a cargarlo en fondos.xlsx.',
+  {id:'bbva-distrib', fid:'bbva_fdf_distributivo', label:'BBVA FdF Distributivo Estratégico Global', match:'', asset:'Mixtos',
+   falta:'Este fondo no está en la matriz (los distributivos se retiraron en octubre). Las cifras mostradas vienen del factsheet.',
    fs:[{l:'Fondos BBVA (fichas)', u:'https://fondos.bbva.pe/', st:'ok', pri:1}]},
-  {id:'cc-cons-cp-usd', fid:'cc_conservador_corto_usd', label:'CC Conservador Corto Plazo US$', match:'CRED. CONSER. CORTO PLAZO $ SERIE A', asset:'Renta Fija', arq:'carry_usd',
-   comp:'Fondo mutuo conservador de corto plazo en dólares, de Credicorp Capital. Renta fija de bajo riesgo relativo y duración reducida. El detalle vigente de emisores, calificación y duración está en el factsheet mensual.',
+  {id:'cc-cons-cp-usd', fid:'cc_conservador_corto_usd', label:'CC Conservador Corto Plazo US$', match:'CRED. CONSER. CORTO PLAZO $ SERIE A', asset:'Renta Fija',
    fs:[{l:'Credicorp Capital Fondos', u:'https://www.credicorpcapitalfondos.com/', st:'tbc', pri:1}]},
-  {id:'cc-cons-cp-pen', fid:'cc_conservador_corto_pen', label:'CC Conservador Corto Plazo S/.', match:'CRED. CONSER. CORTO PLAZO S/ SERIE A', asset:'Renta Fija', arq:'carry_pen',
-   comp:'Fondo mutuo conservador de corto plazo en soles, de Credicorp Capital. Renta fija local de bajo riesgo relativo y sensibilidad reducida a las tasas de interés. El detalle vigente de emisores, calificación y duración está en el factsheet mensual.',
+  {id:'cc-cons-cp-pen', fid:'cc_conservador_corto_pen', label:'CC Conservador Corto Plazo S/.', match:'CRED. CONSER. CORTO PLAZO S/ SERIE A', asset:'Renta Fija',
    fs:[{l:'Credicorp Capital Fondos', u:'https://www.credicorpcapitalfondos.com/', st:'tbc', pri:1}]},
-  {id:'cc-cons-mp-pen', fid:'cc_conservador_mediano_pen', label:'CC Conservador Mediano Plazo S/.', match:'CC CONSERV. MED. PLAZO S/. SERIE A', asset:'Renta Fija', arq:'dur_pen',
-   comp:'Fondo mutuo conservador de mediano plazo en soles, de Credicorp Capital. Renta fija local con duración mayor que la serie de corto plazo. El detalle vigente de emisores, calificación y duración está en el factsheet mensual.',
+  {id:'cc-cons-mp-pen', fid:'cc_conservador_mediano_pen', label:'CC Conservador Mediano Plazo S/.', match:'CC CONSERV. MED. PLAZO S/. SERIE A', asset:'Renta Fija',
    fs:[{l:'Credicorp Capital Fondos', u:'https://www.credicorpcapitalfondos.com/', st:'tbc', pri:1}]},
-  {id:'cc-deuda-pen', fid:'cc_deuda_corporativa_pen', label:'CC Deuda Corporativa Soles', match:'CC DEUDA CORPORATIVA SOLES CREDICORP SAF', asset:'Renta Fija', arq:'dur_pen',
-   comp:'Fondo mutuo de deuda corporativa en soles, de Credicorp Capital. Invierte en bonos de empresas, con plazo mayor que los fondos conservadores. El detalle vigente de emisores, sectores y duración está en el factsheet mensual.',
+  {id:'cc-deuda-pen', fid:'cc_deuda_corporativa_pen', label:'CC Deuda Corporativa Soles', match:'CC DEUDA CORPORATIVA SOLES CREDICORP SAF', asset:'Renta Fija',
    fs:[{l:'Credicorp Capital Fondos', u:'https://www.credicorpcapitalfondos.com/', st:'tbc', pri:1}]},
-  {id:'cc-duracion-latam', fid:'cc_duracion_objetivo_latam', label:'FdF CC Duración Objetivo Latam', match:'FdF CC Duración Objetivo Latam CREDICORP SAF', asset:'Renta Fija', arq:'dur_usd',
-   comp:'Fondo de fondos de deuda latinoamericana en dólares, de Credicorp Capital, con gestión orientada a una duración objetivo. Invierte en cuotas de fondos subyacentes. La lista de subyacentes y la duración vigente constan en el factsheet mensual.',
+  {id:'cc-duracion-latam', fid:'cc_duracion_objetivo_latam', label:'FdF CC Duración Objetivo Latam', match:'FdF CC Duración Objetivo Latam CREDICORP SAF', asset:'Renta Fija',
    fs:[{l:'Credicorp Capital Fondos', u:'https://www.credicorpcapitalfondos.com/', st:'tbc', pri:1}]},
-  {id:'cc-hy-latam', fid:'cc_deuda_corporativa_latam_hy', label:'CC Deuda Corporativa Latam High Yield', match:'CRED DEUDA CORP LATAM HY CREDICORP SAF', asset:'Renta Fija', arq:'hy',
-   comp:'Fondo de deuda corporativa latinoamericana de alto rendimiento en dólares, de Credicorp Capital. Invierte en bonos de emisores con calificación inferior a grado de inversión. El detalle vigente de emisores, países y sectores está en el factsheet mensual.',
+  {id:'cc-hy-latam', fid:'cc_deuda_corporativa_latam_hy', label:'CC Deuda Corporativa Latam High Yield', match:'CRED DEUDA CORP LATAM HY CREDICORP SAF', asset:'Renta Fija',
    fs:[{l:'Credicorp Capital Fondos', u:'https://www.credicorpcapitalfondos.com/', st:'tbc', pri:1}]},
-  {id:'blum-mm', fid:'blum_money_market_usd', label:'Blum Money Market $', match:'BLUM MONEY MARKET $ FM BLUM SAF', asset:'Caja y Efectivo', arq:'carry_usd',
-   comp:'Fondo money market en dólares de Blum SAF. Invierte en bonos y depósitos de muy corto plazo, en mercados locales y globales, con foco en liquidez y bajo riesgo.',
+  {id:'blum-mm', fid:'blum_money_market_usd', label:'Blum Money Market $', match:'BLUM MONEY MARKET $ FM BLUM SAF', asset:'Caja y Efectivo',
    fs:[{l:'Buscar factsheet Blum', u:'https://www.google.com/search?q=Blum+SAF+Blum+Money+Market+factsheet', st:'tbc', pri:1}]},
-  {id:'blum-bonos', fid:'blum_bonos_globales', label:'Blum Bonos Globales', match:'', asset:'Renta Fija', arq:'dur_usd',
-   comp:'Fondo de bonos globales en dólares de Blum SAF. La composición por emisor, calificación y duración consta en el factsheet de la gestora.',
-   falta:'No hay una fila con este nombre en la matriz. Blum Renta Global FM Serie B es el candidato más cercano; hay que confirmar si es el mismo fondo o agregarlo a fondos.xlsx.',
+  {id:'blum-bonos', fid:'blum_bonos_globales', label:'Blum Bonos Globales', match:'', asset:'Renta Fija',
+   falta:'No está en la matriz (Blum Renta Global FM Serie B es otro fondo). Las cifras mostradas vienen del factsheet.',
    fs:[{l:'Buscar factsheet Blum', u:'https://www.google.com/search?q=Blum+SAF+Blum+Bonos+Globales+factsheet', st:'tbc', pri:1}]},
-  {id:'cc-latam-eq', fid:'cc_latin_american_equity_i', label:'CC Latin American Equity I', match:'', asset:'Renta Variable', arq:'eq',
-   comp:'Fondo de renta variable latinoamericana de Credicorp Capital. La composición por país y sector consta en el factsheet de la gestora.',
-   falta:'No hay una fila con este nombre en la matriz. Para ver cifras hay que agregarlo a fondos.xlsx.',
+  {id:'cc-latam-eq', fid:'cc_acciones_latam_pe', label:'FdF CC Acciones Latam (Perú)', match:'', asset:'Renta Variable',
+   falta:'No está en la matriz. Las cifras mostradas vienen del factsheet.',
    fs:[{l:'Buscar factsheet', u:'https://www.google.com/search?q=Credicorp+Capital+Latin+American+Equity+I+factsheet', st:'tbc', pri:1}]}
 ];
 
+let CART_S4 = null;
+async function csLoadCartera(){
+  if(CART_S4) return;
+  const urls=['/cartera.json','https://raw.githubusercontent.com/S4consultoria/s4-monitor-fondos-mutuos/main/cartera.json'];
+  for(const u of urls){
+    try{
+      const r = await fetch(u+'?t='+Date.now()); if(!r.ok) continue;
+      const j = await r.json(); CART_S4={}; (j.fondos||[]).forEach(x=>{ CART_S4[x.id]=x; }); return;
+    }catch(e){}
+  }
+  CART_S4 = {};
+}
 let FS_S4 = null;
 async function csLoadFactsheets(){
   if(FS_S4) return;
@@ -1665,6 +1638,7 @@ async function csLoadFactsheets(){
     if(!r.ok) throw new Error('HTTP '+r.status);
     const j = await r.json();
     FS_S4 = {}; (j.fondos||[]).forEach(x=>{ FS_S4[x.fondo_id]=x; });
+    if(FS_S4.cc_latin_american_equity_i) FS_S4.cc_acciones_latam_pe = FS_S4.cc_latin_american_equity_i;
   }catch(e){ FS_S4 = {}; }
 }
 function csMes(p){
@@ -1697,6 +1671,55 @@ function carteraModal(id){
   const c=CARTERA_S4.find(x=>x.id===id); const f=c && csFind(c);
   if(f) openModal(f.nombre);
 }
+function csMi(p){ const m=/^(\d{4})-(\d{2})$/.exec(p||''); return m ? (+m[1])*12+(+m[2]-1) : null; }
+function csMesExcel(){
+  let ref=null;
+  DATA.forEach(f=>{ if(f.serie && f.serie.length){ const d=f.serie[f.serie.length-1].date; const m=d.getUTCFullYear()*12+d.getUTCMonth(); if(ref==null||m>ref) ref=m; } });
+  return ref;
+}
+function csBars(title, items, max){
+  if(!items || !items.length) return '';
+  const rows = items.filter(x=>x.pct>0).slice(0, max||8);
+  if(!rows.length) return '';
+  const top = Math.max(...rows.map(x=>x.pct), 1);
+  return `<div class="cs-sub">${title}</div>` + rows.map(x=>`<div class="cs-bar"><span class="n" title="${x.nombre}">${x.nombre}</span><span class="t"><i style="width:${Math.min(100,x.pct/top*100).toFixed(1)}%"></i></span><span class="p">${x.pct.toFixed(1)}%</span></div>`).join('');
+}
+function csFmt(v,d){ return v==null?'—':Number(v).toLocaleString('es-PE',{minimumFractionDigits:d,maximumFractionDigits:d}); }
+function csComp(k){
+  const cm = k && k.composicion; if(!cm) return '';
+  const mes = csMes(k.corte) || k.corte || '';
+  const mx = csMesExcel(), mc = csMi(k.corte);
+  const stale = (mx!=null && mc!=null && mc<mx) ? '<span class="cs-stale">composición desactualizada</span>' : '';
+  const meta = [];
+  if(cm.patrimonio) meta.push('Patrimonio '+cm.patrimonio.unidad.replace(' MM','')+' '+csFmt(cm.patrimonio.valor,1)+' MM');
+  if(cm.duracion) meta.push('Duración '+csFmt(cm.duracion.valor,2)+(cm.duracion.nota?' ('+cm.duracion.nota+')':''));
+  if(cm.ytw!=null) meta.push('YTW '+csFmt(cm.ytw,2)+'%');
+  if(cm.rating_promedio) meta.push('Rating promedio: '+cm.rating_promedio);
+  const sub = cm.subyacente || {};
+  const principal = cm.tipo_instrumento || cm.estrategia || cm.sector;
+  const tituloP = cm.tipo_instrumento ? 'Por tipo de instrumento' : cm.estrategia ? 'Por estrategia' : 'Por sector';
+  let h = `<div class="cs-comp"><div class="hd"><h4>Composición de cartera al ${mes}</h4>${stale}</div>`;
+  if(meta.length) h += `<div class="cs-meta">${meta.map(m=>`<span>${m}</span>`).join('')}</div>`;
+  h += csBars(tituloP, principal, 8);
+  if(cm.region) h += csBars('Por región', cm.region, 6);
+  if(sub.tipo_activo) h += csBars('Fondo subyacente ('+sub.nombre+') · tipo de activo', sub.tipo_activo, 6);
+  if(sub.region) h += csBars('Subyacente ('+sub.nombre+') · región', sub.region, 6);
+  if(sub.sector) h += csBars('Subyacente ('+sub.nombre+') · sector', sub.sector, 6);
+  if(cm.riesgo_crediticio) h += csBars('Riesgo crediticio', cm.riesgo_crediticio, 6);
+  if(sub.riesgo_crediticio) h += csBars('Subyacente · riesgo crediticio', sub.riesgo_crediticio, 6);
+  if(cm.moneda && cm.moneda.length>1) h += csBars('Por moneda', cm.moneda, 3);
+  if(cm.top_emisores && cm.top_emisores.length){
+    const t = cm.top_emisores.slice(0,5).map(e=>e.nombre+' '+e.pct.toFixed(1)+'%').join(' · ');
+    h += `<div class="cs-sub">Principales emisores</div><p class="cs-top">${t}</p>`;
+  }
+  h += '</div>';
+  return h;
+}
+function csFsKpis(k){
+  const m = k && k.metricas_factsheet; if(!m) return '';
+  const val = (per)=>{ const i=m.periodos.indexOf(per); return i<0?null:m.fondo[i]; };
+  return '<div class="cs-kpis">'+csKpi('12M (factsheet)',val('12M'),true)+csKpi('YTD (factsheet)',val('YTD'),true)+csKpi('3M (factsheet)',val('3M'),true)+'</div>';
+}
 function csDetail(c,f){
   let kp='', rk='';
   if(f){
@@ -1711,7 +1734,8 @@ function csDetail(c,f){
       `<div class="cs-kpi"><div class="l">Ranking en su grupo</div><div class="v">${rk}</div></div>`+
       '</div>';
   }
-  const a = ARQ_S4[c.arq] || {};
+  const k = CART_S4 && CART_S4[c.fid];
+  const a = (k && k.perspectiva_12m) || {};
   const fx = FS_S4 && FS_S4[c.fid];
   const fsBtns = fx && fx.url_pdf
     ? `<a class="cs-btn pri" href="${fx.url_pdf}" target="_blank" rel="noopener">📄 Factsheet${fx.periodo?' '+csMes(fx.periodo):''}${fx.estado==='PDF_ENLACE_VALIDADO'?'':'<span class="cs-tag">por confirmar</span>'}</a>`
@@ -1721,24 +1745,25 @@ function csDetail(c,f){
     + (f?`<a class="cs-btn" onclick="carteraModal('${c.id}')">Ver valor cuota</a>`:'');
   return `<div class="cs-det">
     <div>
-      ${c.falta?`<div class="cs-warn">${c.falta}</div>`:''}
-      ${kp}
+      ${c.falta?`<div class="cs-warn">${c.falta}</div>`:''}${k&&k.nota&&!c.falta?`<div class="cs-warn">${k.nota}</div>`:''}
+      ${kp || csFsKpis(k)}
       <h4>En qué invierte</h4>
-      <p>${c.comp}</p>
+      <p>${k?k.en_que_invierte:'Sin lectura de factsheet en cartera.json.'}</p>
+      ${csComp(k)}
       <div class="cs-btns">${btns}</div>
     </div>
     <div>
       <h4>Perspectiva a 12 meses · escenario base</h4>
-      <p>${a.base||''}</p>
+      <p>${a.base||'—'}</p>
       <h4>Riesgos</h4>
-      <p>${a.riesgos||''}</p>
+      <p>${a.riesgos||'—'}</p>
       <h4>Qué monitorear</h4>
-      <p>${a.vigilar||''}</p>
+      <p>${a.vigilar||'—'}</p>
     </div>
   </div>`;
 }
 async function renderCartera(){
-  await csLoadFactsheets();
+  await Promise.all([csLoadFactsheets(), csLoadCartera()]);
   const wrap=document.getElementById('cartera-wrap'); if(!wrap) return;
   if(!DATA.length){ wrap.innerHTML='<div class="hist-empty">Cargando datos…</div>'; return; }
   const items = CARTERA_S4.map(c=>({c, f:csFind(c)}));

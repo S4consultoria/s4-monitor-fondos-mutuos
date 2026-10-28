@@ -1,0 +1,1835 @@
+{
+ "version": 1,
+ "fecha_lectura": "2026-10-28",
+ "corte_general": "2026-09",
+ "nota": "Lectura manual de los factsheets de septiembre 2026. Rebanadas sin rótulo en los gráficos se dejaron fuera; los porcentajes pueden no sumar 100.",
+ "fondos": [
+  {
+   "id": "bbva_renta_corto_plazo_pen",
+   "nombre_excel": "BBVA RENTA CORTO PLAZO S/. BBVA SAF",
+   "corte": "2026-09",
+   "composicion": {
+    "patrimonio": {
+     "valor": 918,
+     "unidad": "S/ MM"
+    },
+    "duracion": null,
+    "tipo_instrumento": [
+     {
+      "nombre": "Bonos corporativos",
+      "pct": 51.41
+     },
+     {
+      "nombre": "Depósitos a plazo",
+      "pct": 37.02
+     },
+     {
+      "nombre": "Depósitos en cuentas de ahorro",
+      "pct": 11.52
+     },
+     {
+      "nombre": "Certificados",
+      "pct": 0.49
+     },
+     {
+      "nombre": "Instrumentos de gobierno",
+      "pct": 0.0
+     },
+     {
+      "nombre": "Instrumentos de cobertura",
+      "pct": -0.44
+     }
+    ],
+    "top_emisores": [
+     {
+      "nombre": "Interbank",
+      "pct": 11.4
+     },
+     {
+      "nombre": "Banco de Crédito e Inversiones",
+      "pct": 6.2
+     },
+     {
+      "nombre": "BBVA Perú",
+      "pct": 5.0
+     },
+     {
+      "nombre": "Intercorp Perú",
+      "pct": 4.9
+     },
+     {
+      "nombre": "Corporación Andina de Fomento",
+      "pct": 4.7
+     },
+     {
+      "nombre": "Cofide",
+      "pct": 4.7
+     },
+     {
+      "nombre": "Santander Brasil",
+      "pct": 4.4
+     },
+     {
+      "nombre": "BTG Pactual",
+      "pct": 4.2
+     },
+     {
+      "nombre": "Banco Inbursa",
+      "pct": 4.0
+     },
+     {
+      "nombre": "BTG Pactual Chile",
+      "pct": 3.9
+     }
+    ],
+    "top_emisores_total": 53.3,
+    "moneda": [
+     {
+      "nombre": "Soles",
+      "pct": 100.0
+     }
+    ]
+   },
+   "metricas_factsheet": {
+    "periodos": [
+     "YTD",
+     "3M",
+     "6M",
+     "9M",
+     "12M",
+     "2025",
+     "2024"
+    ],
+    "fondo": [
+     2.96,
+     0.79,
+     2.08,
+     2.96,
+     3.89,
+     5.17,
+     5.61
+    ],
+    "benchmark": [
+     2.84,
+     0.79,
+     1.99,
+     2.84,
+     3.85,
+     4.63,
+     5.78
+    ]
+   },
+   "en_que_invierte": "Fondo de renta fija de corto plazo (hasta 1 año) que invierte en bonos y depósitos a plazo en soles, emitidos por el Estado Peruano y por empresas del país de alta calidad crediticia.",
+   "perspectiva_12m": {
+    "base": "Retorno cercano a las tasas de depósitos en soles y baja volatilidad. Con la referencia del BCRP en 4,25% y presión inflacionaria, el rendimiento corriente se mantiene o sube levemente si el BCRP ajusta al alza.",
+    "riesgos": "Menores tasas si la inflación converge y el BCRP recorta. Riesgo crediticio puntual de emisores locales.",
+    "vigilar": "Decisión mensual del BCRP · inflación interanual · tasas de depósitos a 30–180 días."
+   },
+   "fuente_pdf": "https://bbvaamdocs.bbva.com/documents/BBVA/BBVATSO-PE_FINV_20261009_PER_SPA_0.pdf",
+   "fecha_lectura": "2026-10-28",
+   "fuente_estable": "https://producto.bbvaassetmanagement.com/pe/index.html#!/BBVATSO-PE"
+  },
+  {
+   "id": "bbva_renta_corto_plazo_usd",
+   "nombre_excel": "BBVA RENTA CORTO PLAZO $ BBVA SAF",
+   "corte": "2026-09",
+   "composicion": {
+    "patrimonio": {
+     "valor": 765,
+     "unidad": "US$ MM"
+    },
+    "duracion": null,
+    "tipo_instrumento": [
+     {
+      "nombre": "Bonos corporativos",
+      "pct": 51.61
+     },
+     {
+      "nombre": "Depósitos a plazo",
+      "pct": 44.43
+     },
+     {
+      "nombre": "Depósitos en cuentas de ahorro",
+      "pct": 3.44
+     },
+     {
+      "nombre": "Instrumentos de go… (rótulo truncado en el factsheet)",
+      "pct": 0.49
+     },
+     {
+      "nombre": "Certificados",
+      "pct": 0.0
+     }
+    ],
+    "top_emisores": [
+     {
+      "nombre": "Banco de Crédito e Inversiones",
+      "pct": 6.8
+     },
+     {
+      "nombre": "BTG Pactual Chile",
+      "pct": 6.5
+     },
+     {
+      "nombre": "Bank of Nova Scotia",
+      "pct": 6.4
+     },
+     {
+      "nombre": "Banco Inbursa",
+      "pct": 5.9
+     },
+     {
+      "nombre": "Itaú Corpbanca NY",
+      "pct": 5.3
+     },
+     {
+      "nombre": "Banco Santander NY",
+      "pct": 5.3
+     },
+     {
+      "nombre": "Enel Américas",
+      "pct": 4.2
+     },
+     {
+      "nombre": "BTG Pactual",
+      "pct": 4.0
+     },
+     {
+      "nombre": "Transportadora de Gas del Perú",
+      "pct": 3.9
+     },
+     {
+      "nombre": "Oleoducto Central",
+      "pct": 3.8
+     }
+    ],
+    "top_emisores_total": 52.1,
+    "moneda": [
+     {
+      "nombre": "Dólares",
+      "pct": 100.0
+     }
+    ]
+   },
+   "metricas_factsheet": {
+    "periodos": [
+     "YTD",
+     "3M",
+     "6M",
+     "9M",
+     "12M",
+     "2025",
+     "2024"
+    ],
+    "fondo": [
+     2.05,
+     0.52,
+     1.45,
+     2.05,
+     2.87,
+     4.89,
+     5.22
+    ],
+    "benchmark": [
+     1.73,
+     0.4,
+     1.2,
+     1.73,
+     2.49,
+     3.54,
+     4.23
+    ]
+   },
+   "en_que_invierte": "Fondo de renta fija de corto plazo (hasta 1 año) que invierte en bonos y depósitos a plazo en dólares, emitidos por gobiernos y corporativos latinoamericanos de alta calidad crediticia. Mantiene una categoría promedio de grado de inversión.",
+   "perspectiva_12m": {
+    "base": "Retorno anclado a las tasas de corto plazo en dólares. Con la Fed en 3,75–4,00% y la mediana del SEP en 4,1% para fin de 2026, el carry en USD se mantiene o sube levemente.",
+    "riesgos": "Recortes de la Fed si el mercado laboral se debilita. Ampliación de spreads en emisores corporativos.",
+    "vigilar": "Reunión FOMC del 27–28 oct · rendimiento del Tesoro a 2 años · spreads de crédito de corto plazo."
+   },
+   "fuente_pdf": "https://bbvaamdocs.bbva.com/documents/BBVA/SUPRDMNPEEQU_FINV_20261009_PER_SPA_0.pdf",
+   "fecha_lectura": "2026-10-28",
+   "fuente_estable": "https://producto.bbvaassetmanagement.com/pe/index.html#!/fichape/SUPRDMNPEEQU"
+  },
+  {
+   "id": "bbva_fdf_distributivo",
+   "nombre_excel": "",
+   "corte": "2026-09",
+   "nota": "No está en la matriz de fondos.xlsx; las cifras provienen del factsheet.",
+   "composicion": {
+    "patrimonio": {
+     "valor": 132.67,
+     "unidad": "US$ MM"
+    },
+    "duracion": {
+     "valor": 6.25,
+     "nota": "del fondo subyacente"
+    },
+    "tipo_instrumento": [
+     {
+      "nombre": "PIMCO Income Fund",
+      "pct": 96.39
+     },
+     {
+      "nombre": "Liquidez",
+      "pct": 3.58
+     },
+     {
+      "nombre": "Renta fija",
+      "pct": 0.03
+     }
+    ],
+    "subyacente": {
+     "nombre": "PIMCO Income Fund",
+     "tipo_activo": [
+      {
+       "nombre": "Securitizados",
+       "pct": 53.0
+      },
+      {
+       "nombre": "Relacionado a gobierno",
+       "pct": 15.0
+      },
+      {
+       "nombre": "Crédito grado de inversión",
+       "pct": 16.0
+      },
+      {
+       "nombre": "Crédito emergente",
+       "pct": 7.0
+      },
+      {
+       "nombre": "Crédito high yield",
+       "pct": 5.0
+      },
+      {
+       "nombre": "Cash / otros",
+       "pct": 4.0
+      }
+     ],
+     "contribucion_duracion_pais": [
+      {
+       "nombre": "Estados Unidos",
+       "pct": 76
+      },
+      {
+       "nombre": "Reino Unido",
+       "pct": 11
+      },
+      {
+       "nombre": "Australia",
+       "pct": 6
+      },
+      {
+       "nombre": "Sudáfrica",
+       "pct": 2
+      },
+      {
+       "nombre": "Unión Europea",
+       "pct": 2
+      },
+      {
+       "nombre": "Alemania",
+       "pct": -2
+      }
+     ]
+    },
+    "top_emisores": [
+     {
+      "nombre": "FNMA TBA vcto. septiembre 30 años",
+      "pct": 6.11
+     },
+     {
+      "nombre": "FNMA TBA vcto. agosto 30 años",
+      "pct": 4.53
+     },
+     {
+      "nombre": "FNMA TBA vcto. agosto 30 años (2)",
+      "pct": 2.85
+     },
+     {
+      "nombre": "FNMA TBA vcto. septiembre 30 años (2)",
+      "pct": 1.68
+     },
+     {
+      "nombre": "FNMA TBA vcto. agosto 30 años (3)",
+      "pct": 1.58
+     },
+     {
+      "nombre": "FNMA TBA vcto. septiembre 30 años (3)",
+      "pct": 1.56
+     },
+     {
+      "nombre": "Tesoro EE. UU. protegido contra inflación",
+      "pct": 1.26
+     },
+     {
+      "nombre": "Beignet Investor LLC",
+      "pct": 1.15
+     },
+     {
+      "nombre": "Bono del Tesoro de EE. UU.",
+      "pct": 1.02
+     },
+     {
+      "nombre": "Nota del Tesoro de EE. UU.",
+      "pct": 0.96
+     }
+    ],
+    "top_emisores_total": 22.7,
+    "moneda": [
+     {
+      "nombre": "Dólares",
+      "pct": 100.0
+     }
+    ]
+   },
+   "metricas_factsheet": {
+    "periodos": [
+     "YTD",
+     "3M",
+     "6M",
+     "9M",
+     "12M",
+     "2025",
+     "2024"
+    ],
+    "fondo": [
+     -3.36,
+     -4.46,
+     -2.03,
+     -3.36,
+     -1.27,
+     9.04,
+     4.28
+    ],
+    "benchmark": [
+     -0.38,
+     -1.18,
+     -0.47,
+     -0.38,
+     0.57,
+     6.96,
+     2.46
+    ]
+   },
+   "en_que_invierte": "Fondo de fondos que invierte el 95 % del portafolio en cuotas del PIMCO Income Fund (renta fija global de gestión activa: bonos del Tesoro y otros gobiernos desarrollados, corporativos de grado de inversión, gobiernos emergentes, entre otros) para generar una renta trimestral a los partícipes, en función del desempeño del fondo subyacente.",
+   "perspectiva_12m": {
+    "base": "Retorno e ingreso periódico dependen del carry y del precio de los bonos del fondo subyacente. La duración de 6,25 años hace que el valor responda a las tasas de EE. UU.; el sesgo restrictivo de la Fed añade presión en el corto plazo y el carry lo compensa de forma gradual.",
+    "riesgos": "Alza de tasas del Tesoro. Ampliación de spreads de crédito. Distribución superior al retorno devengado puede reducir el capital. Doble capa de comisiones en un fondo de fondos.",
+    "vigilar": "Reunión FOMC · rendimiento del Tesoro a 10 años · spreads de crédito y de hipotecarios (MBS) · política de distribución trimestral."
+   },
+   "fuente_pdf": "https://bbvaamdocs.bbva.com/documents/BBVA/382_FINV_20261009_PER_SPA_0.pdf",
+   "fecha_lectura": "2026-10-28",
+   "fuente_estable": "https://producto.bbvaassetmanagement.com/pe/index.html#!/fichape/382"
+  },
+  {
+   "id": "cc_conservador_corto_usd",
+   "nombre_excel": "CRED. CONSER. CORTO PLAZO $ SERIE A",
+   "corte": "2026-09",
+   "composicion": {
+    "patrimonio": {
+     "valor": 1031.9,
+     "unidad": "US$ MM"
+    },
+    "duracion": {
+     "valor": 0.95,
+     "unidad": "años"
+    },
+    "volatilidad": 0.38,
+    "rating_fondo": {
+     "PCR": "AAf+ / C3",
+     "Moody's": "AA / RM4"
+    },
+    "tipo_instrumento": [
+     {
+      "nombre": "Bonos corporativos",
+      "pct": 53.72
+     },
+     {
+      "nombre": "Depósitos a plazo",
+      "pct": 27.05
+     },
+     {
+      "nombre": "Otros",
+      "pct": 10.83
+     },
+     {
+      "nombre": "Bonos soberanos",
+      "pct": 7.54
+     }
+    ],
+    "region": [
+     {
+      "nombre": "Extranjero",
+      "pct": 97.73
+     },
+     {
+      "nombre": "Local",
+      "pct": 2.27
+     }
+    ],
+    "riesgo_crediticio": [
+     {
+      "nombre": "AAA / BBB-",
+      "pct": 69.37
+     },
+     {
+      "nombre": "BB+ / B-",
+      "pct": 30.63
+     }
+    ],
+    "top_emisores": [
+     {
+      "nombre": "Credicorp Cap Latin American Short Duration",
+      "pct": 6.46
+     },
+     {
+      "nombre": "Banco Inbursa",
+      "pct": 4.23
+     },
+     {
+      "nombre": "United States of America",
+      "pct": 4.07
+     },
+     {
+      "nombre": "Itaú Corpbanca New York",
+      "pct": 4.01
+     },
+     {
+      "nombre": "Banco BCI Miami",
+      "pct": 3.18
+     },
+     {
+      "nombre": "Banco Bradesco",
+      "pct": 3.07
+     },
+     {
+      "nombre": "Bancolombia",
+      "pct": 3.03
+     },
+     {
+      "nombre": "Banco Santander México",
+      "pct": 2.95
+     },
+     {
+      "nombre": "Enel Generación Chile",
+      "pct": 2.68
+     },
+     {
+      "nombre": "BTG Pactual Chile",
+      "pct": 2.41
+     }
+    ],
+    "top_emisores_total": 36.09,
+    "moneda": [
+     {
+      "nombre": "Dólares",
+      "pct": 100.0
+     }
+    ]
+   },
+   "metricas_factsheet": {
+    "periodos": [
+     "YTD",
+     "3M",
+     "6M",
+     "9M",
+     "12M",
+     "2025",
+     "2024"
+    ],
+    "fondo": [
+     1.82,
+     0.38,
+     1.17,
+     1.82,
+     2.7,
+     4.66,
+     5.35
+    ],
+    "benchmark": [
+     1.97,
+     0.65,
+     1.31,
+     1.97,
+     2.65,
+     2.9,
+     3.67
+    ]
+   },
+   "en_que_invierte": "Fondo mutuo de corto plazo que invierte únicamente en instrumentos de deuda y depósitos a plazo, en el mercado local e internacional, con duración de portafolio entre 90 y 360 días. Serie A, dirigida a personas naturales desde el 21-sep-26.",
+   "perspectiva_12m": {
+    "base": "Retorno anclado a las tasas de corto plazo en dólares. Con la Fed en 3,75–4,00% y la mediana del SEP en 4,1% para fin de 2026, el carry en USD se mantiene o sube levemente.",
+    "riesgos": "Recortes de la Fed si el mercado laboral se debilita. Ampliación de spreads en emisores corporativos.",
+    "vigilar": "Reunión FOMC del 27–28 oct · rendimiento del Tesoro a 2 años · spreads de crédito de corto plazo."
+   },
+   "fuente_pdf": "https://www.credicorpcapital.com/Peru/Fondos/FonMut/Loc/Fondos%20de%20Renta%20Fija/Conservador_Corto_Plazo_Dolares/Hojas_Informativas_Setiembre_2026-CC_Corto_Plazo_D%C3%B3lares_-_Serie_A.pdf",
+   "fecha_lectura": "2026-10-28",
+   "fuente_estable": "https://www.credicorpcapital.com/Peru/Fondos/FonMut/Loc/Paginas/CPD.aspx?t=3"
+  },
+  {
+   "id": "cc_conservador_corto_pen",
+   "nombre_excel": "CRED. CONSER. CORTO PLAZO S/ SERIE A",
+   "corte": "2026-09",
+   "composicion": {
+    "patrimonio": {
+     "valor": 1320.05,
+     "unidad": "S/ MM"
+    },
+    "duracion": {
+     "valor": 0.97,
+     "unidad": "años"
+    },
+    "volatilidad": 0.39,
+    "rating_fondo": {
+     "PCR": "AAf+ / C3",
+     "Moody's": "AA / RM4"
+    },
+    "tipo_instrumento": [
+     {
+      "nombre": "Bonos corporativos",
+      "pct": 52.61
+     },
+     {
+      "nombre": "Depósitos a plazo",
+      "pct": 28.07
+     },
+     {
+      "nombre": "Fondos mutuos",
+      "pct": 9.46
+     },
+     {
+      "nombre": "Bonos soberanos",
+      "pct": 7.67
+     }
+    ],
+    "region": [
+     {
+      "nombre": "Extranjero",
+      "pct": 83.13
+     },
+     {
+      "nombre": "Local",
+      "pct": 16.87
+     }
+    ],
+    "riesgo_crediticio": [
+     {
+      "nombre": "AAA / BBB-",
+      "pct": 67.37
+     },
+     {
+      "nombre": "BB+ / B-",
+      "pct": 32.63
+     }
+    ],
+    "top_emisores": [
+     {
+      "nombre": "Credicorp Cap Latin American Short Duration",
+      "pct": 9.46
+     },
+     {
+      "nombre": "Banco de Crédito del Perú",
+      "pct": 5.41
+     },
+     {
+      "nombre": "Banco Internacional del Perú",
+      "pct": 5.25
+     },
+     {
+      "nombre": "Barclays Bank",
+      "pct": 4.44
+     },
+     {
+      "nombre": "Corporación Primax",
+      "pct": 3.4
+     },
+     {
+      "nombre": "Bank of Nova Scotia",
+      "pct": 3.36
+     },
+     {
+      "nombre": "República de Colombia",
+      "pct": 3.27
+     },
+     {
+      "nombre": "Banco Safra",
+      "pct": 3.11
+     },
+     {
+      "nombre": "Itaú Corpbanca New York",
+      "pct": 3.08
+     },
+     {
+      "nombre": "Banco Santander Brasil",
+      "pct": 2.93
+     }
+    ],
+    "top_emisores_total": 43.71,
+    "moneda": [
+     {
+      "nombre": "Soles",
+      "pct": 100.0
+     }
+    ]
+   },
+   "metricas_factsheet": {
+    "periodos": [
+     "YTD",
+     "3M",
+     "6M",
+     "9M",
+     "12M",
+     "2025",
+     "2024"
+    ],
+    "fondo": [
+     2.65,
+     0.59,
+     1.92,
+     2.65,
+     3.59,
+     4.7,
+     6.03
+    ],
+    "benchmark": [
+     2.89,
+     0.97,
+     1.93,
+     2.89,
+     3.84,
+     3.91,
+     4.72
+    ]
+   },
+   "en_que_invierte": "Fondo mutuo de corto plazo que invierte únicamente en instrumentos de deuda y depósitos a plazo, mayormente en el mercado local, con duración de portafolio entre 90 y 360 días. Serie A, dirigida a personas naturales desde el 21-sep-26.",
+   "perspectiva_12m": {
+    "base": "Retorno cercano a las tasas de depósitos en soles y baja volatilidad. Con la referencia del BCRP en 4,25% y presión inflacionaria, el rendimiento corriente se mantiene o sube levemente si el BCRP ajusta al alza.",
+    "riesgos": "Menores tasas si la inflación converge y el BCRP recorta. Riesgo crediticio puntual de emisores locales.",
+    "vigilar": "Decisión mensual del BCRP · inflación interanual · tasas de depósitos a 30–180 días."
+   },
+   "fuente_pdf": "https://www.credicorpcapital.com/Peru/Fondos/FonMut/Loc/Fondos%20de%20Renta%20Fija/Conservador_Corto_Plazo_Soles/Hojas_Informativas_Setiembre_2026-CC_Corto_Plazo_Soles_-_Serie_A.pdf",
+   "fecha_lectura": "2026-10-28",
+   "fuente_estable": "https://www.credicorpcapital.com/Peru/Fondos/FonMut/Loc/Paginas/CPS.aspx?t=3"
+  },
+  {
+   "id": "cc_conservador_mediano_pen",
+   "nombre_excel": "CC CONSERV. MED. PLAZO S/. SERIE A",
+   "corte": "2026-09",
+   "composicion": {
+    "patrimonio": {
+     "valor": 783.88,
+     "unidad": "S/ MM"
+    },
+    "duracion": {
+     "valor": 2.59,
+     "unidad": "años"
+    },
+    "volatilidad": 1.15,
+    "rating_fondo": {
+     "PCR": "AAf+ / C3-",
+     "Moody's": "AA / RM6"
+    },
+    "tipo_instrumento": [
+     {
+      "nombre": "Bonos corporativos",
+      "pct": 65.82
+     },
+     {
+      "nombre": "Bonos soberanos",
+      "pct": 16.48
+     },
+     {
+      "nombre": "Depósitos a plazo",
+      "pct": 10.85
+     },
+     {
+      "nombre": "Fondos de inversión",
+      "pct": 4.84
+     }
+    ],
+    "region": [
+     {
+      "nombre": "Extranjero",
+      "pct": 62.46
+     },
+     {
+      "nombre": "Local",
+      "pct": 37.54
+     }
+    ],
+    "riesgo_crediticio": [
+     {
+      "nombre": "AAA / BBB-",
+      "pct": 70.93
+     },
+     {
+      "nombre": "BB+ / B-",
+      "pct": 29.07
+     }
+    ],
+    "top_emisores": [
+     {
+      "nombre": "República del Perú",
+      "pct": 9.24
+     },
+     {
+      "nombre": "Barclays Bank",
+      "pct": 4.97
+     },
+     {
+      "nombre": "Corporación Primax",
+      "pct": 3.87
+     },
+     {
+      "nombre": "Intercorp Perú",
+      "pct": 3.85
+     },
+     {
+      "nombre": "Alicorp",
+      "pct": 3.33
+     },
+     {
+      "nombre": "República de Colombia",
+      "pct": 3.32
+     },
+     {
+      "nombre": "Luz del Sur",
+      "pct": 2.96
+     },
+     {
+      "nombre": "Bank of Nova Scotia",
+      "pct": 2.89
+     },
+     {
+      "nombre": "Banco Santander México",
+      "pct": 2.75
+     },
+     {
+      "nombre": "Banco BTG Pactual Cayman",
+      "pct": 2.74
+     }
+    ],
+    "top_emisores_total": 39.91,
+    "moneda": [
+     {
+      "nombre": "Soles",
+      "pct": 100.0
+     }
+    ]
+   },
+   "metricas_factsheet": {
+    "periodos": [
+     "YTD",
+     "3M",
+     "6M",
+     "9M",
+     "12M",
+     "2025",
+     "2024"
+    ],
+    "fondo": [
+     1.91,
+     -0.49,
+     1.85,
+     1.91,
+     3.12,
+     6.74,
+     7.23
+    ],
+    "benchmark": [
+     2.28,
+     0.35,
+     1.33,
+     2.28,
+     3.26,
+     4.04,
+     4.73
+    ]
+   },
+   "en_que_invierte": "Fondo mutuo de mediano plazo que invierte únicamente en instrumentos de deuda, en el mercado nacional e internacional, con duración de portafolio entre 361 y 1.080 días. Serie A, dirigida a personas naturales desde el 21-sep-26.",
+   "perspectiva_12m": {
+    "base": "Retorno compuesto por carry y variación de precios. Un alza de tasas locales resta valor a una cartera de mayor duración en el corto plazo; el carry lo compensa de forma gradual.",
+    "riesgos": "Alza de la tasa BCRP o de la curva de soberanos. Ampliación de spreads corporativos. Volatilidad mensual mayor que en corto plazo.",
+    "vigilar": "Curva de soberanos en soles · expectativas de tasa BCRP · spreads de emisores locales."
+   },
+   "fuente_pdf": "https://www.credicorpcapital.com/Peru/Fondos/FonMut/Loc/Fondos%20de%20Renta%20Fija/Conservador_Mediano_Plazo_Soles/Hojas_Informativas_Setiembre_2026-CC_Mediano_Plazo_Soles_-_Serie_A.pdf",
+   "fecha_lectura": "2026-10-28",
+   "fuente_estable": "https://www.credicorpcapital.com/Peru/Fondos/FonMut/Loc/Paginas/CMPS-FMIV.aspx"
+  },
+  {
+   "id": "cc_deuda_corporativa_pen",
+   "nombre_excel": "CC DEUDA CORPORATIVA SOLES CREDICORP SAF",
+   "corte": "2026-09",
+   "composicion": {
+    "patrimonio": {
+     "valor": 197.95,
+     "unidad": "S/ MM"
+    },
+    "duracion": {
+     "valor": 3.46,
+     "unidad": "años",
+     "nota": "solo la parte de renta fija"
+    },
+    "volatilidad": 2.14,
+    "tipo_instrumento": [
+     {
+      "nombre": "Bonos corporativos",
+      "pct": 68.5
+     },
+     {
+      "nombre": "Bonos soberanos",
+      "pct": 12.84
+     },
+     {
+      "nombre": "Depósitos a plazo",
+      "pct": 7.62
+     },
+     {
+      "nombre": "Otros",
+      "pct": 4.49
+     },
+     {
+      "nombre": "Fondos de inversión",
+      "pct": 4.27
+     }
+    ],
+    "region": [
+     {
+      "nombre": "Perú",
+      "pct": 54.66
+     },
+     {
+      "nombre": "Otros",
+      "pct": 23.19
+     },
+     {
+      "nombre": "Colombia",
+      "pct": 7.96
+     },
+     {
+      "nombre": "Luxemburgo",
+      "pct": 7.12
+     },
+     {
+      "nombre": "Brasil",
+      "pct": 7.07
+     }
+    ],
+    "riesgo_crediticio": [
+     {
+      "nombre": "AAA",
+      "pct": 20.0
+     },
+     {
+      "nombre": "AA",
+      "pct": 23.0
+     },
+     {
+      "nombre": "A",
+      "pct": 5.0
+     },
+     {
+      "nombre": "BBB",
+      "pct": 19.0
+     },
+     {
+      "nombre": "BB",
+      "pct": 32.0
+     }
+    ],
+    "top_emisores": [
+     {
+      "nombre": "República del Perú",
+      "pct": 7.38
+     },
+     {
+      "nombre": "Corporación Primax",
+      "pct": 5.02
+     },
+     {
+      "nombre": "Alicorp",
+      "pct": 4.65
+     },
+     {
+      "nombre": "Intercorp Perú",
+      "pct": 4.58
+     },
+     {
+      "nombre": "República de Colombia",
+      "pct": 3.73
+     },
+     {
+      "nombre": "Interseguro Compañía de Seguros",
+      "pct": 3.4
+     },
+     {
+      "nombre": "Barclays Bank",
+      "pct": 3.05
+     },
+     {
+      "nombre": "Banco Santander México",
+      "pct": 3.01
+     },
+     {
+      "nombre": "Inretail Shopping Malls",
+      "pct": 2.96
+     },
+     {
+      "nombre": "Grupo Nutresa",
+      "pct": 2.75
+     },
+     {
+      "nombre": "Banco Santander Brasil",
+      "pct": 2.7
+     },
+     {
+      "nombre": "Banco BTG Pactual Cayman",
+      "pct": 2.7
+     },
+     {
+      "nombre": "Corporación Azucarera del Perú",
+      "pct": 2.6
+     },
+     {
+      "nombre": "Eagle Funding Luxco",
+      "pct": 2.57
+     },
+     {
+      "nombre": "Orazul Energy Perú",
+      "pct": 2.53
+     }
+    ],
+    "top_emisores_total": 53.64,
+    "moneda": [
+     {
+      "nombre": "Soles",
+      "pct": 51.44
+     },
+     {
+      "nombre": "Dólares",
+      "pct": 48.56
+     }
+    ]
+   },
+   "metricas_factsheet": {
+    "periodos": [
+     "YTD",
+     "3M",
+     "6M",
+     "9M",
+     "12M",
+     "2025",
+     "2024"
+    ],
+    "fondo": [
+     1.74,
+     -0.94,
+     1.75,
+     1.74,
+     3.2,
+     8.03,
+     9.74
+    ],
+    "benchmark": [
+     5.49,
+     -2.44,
+     3.85,
+     5.49,
+     6.78,
+     6.97,
+     8.83
+    ]
+   },
+   "en_que_invierte": "Fondo mutuo flexible que invierte como mínimo 80 % en instrumentos de deuda del mercado nacional e internacional, con duración de portafolio entre 2 y 8 años. A septiembre de 2026 tiene 51,4 % en soles y 48,6 % en dólares. Distribuye en enero, abril, julio y octubre.",
+   "perspectiva_12m": {
+    "base": "Retorno compuesto por carry y variación de precios, con exposición a tasas en soles y en dólares. Un alza de tasas resta valor a la parte de mayor duración en el corto plazo; el carry lo compensa de forma gradual.",
+    "riesgos": "Alza de la tasa BCRP o de la curva de soberanos locales. Alza de tasas del Tesoro. Ampliación de spreads corporativos. Variación del tipo de cambio sobre la parte en dólares.",
+    "vigilar": "Curva de soberanos en soles · tasa BCRP · rendimiento del Tesoro · spreads de emisores locales y latinoamericanos · tipo de cambio."
+   },
+   "fuente_pdf": "https://www.credicorpcapital.com/Peru/Fondos/FonMut/Loc/Fondos%20de%20Renta%20Fija/Deuda_Corporativa_Soles/Hojas_Informativas_Setiembre_2026-Deuda_Corporativa_Soles.pdf",
+   "fecha_lectura": "2026-10-28",
+   "fuente_estable": "https://www.credicorpcapital.com/Peru/Fondos/FonMut/Loc/Paginas/CC-DCS-FMIV.aspx?t=3"
+  },
+  {
+   "id": "cc_duracion_objetivo_latam",
+   "nombre_excel": "FdF CC Duración Objetivo Latam CREDICORP SAF",
+   "corte": "2026-09",
+   "composicion": {
+    "patrimonio": {
+     "valor": 408.55,
+     "unidad": "US$ MM"
+    },
+    "duracion": {
+     "valor": 1.13,
+     "unidad": "años"
+    },
+    "volatilidad": 0.5,
+    "tipo_instrumento": [
+     {
+      "nombre": "Fondos Luxemburgo (CC Latin American Short Duration)",
+      "pct": 85.61
+     },
+     {
+      "nombre": "Depósitos a plazo",
+      "pct": 14.17
+     },
+     {
+      "nombre": "Otros",
+      "pct": 0.22
+     }
+    ],
+    "top_emisores": [
+     {
+      "nombre": "CC Latin American Short Duration Fund",
+      "pct": 85.61
+     },
+     {
+      "nombre": "BTG Pactual Chile",
+      "pct": 4.66
+     },
+     {
+      "nombre": "Banco Santander Brasil",
+      "pct": 2.5
+     },
+     {
+      "nombre": "Itaú Corpbanca New York",
+      "pct": 2.35
+     },
+     {
+      "nombre": "Banco Votorantim Luxembourg Branch",
+      "pct": 1.99
+     },
+     {
+      "nombre": "Banco BTG Pactual Cayman",
+      "pct": 1.24
+     },
+     {
+      "nombre": "BBVA NY",
+      "pct": 1.21
+     },
+     {
+      "nombre": "Banco de Crédito del Perú",
+      "pct": 0.22
+     }
+    ],
+    "subyacente": {
+     "nombre": "CC Latin American Short Duration",
+     "region": [
+      {
+       "nombre": "Otros",
+       "pct": 25.29
+      },
+      {
+       "nombre": "Chile",
+       "pct": 19.13
+      },
+      {
+       "nombre": "México",
+       "pct": 18.61
+      },
+      {
+       "nombre": "Brasil",
+       "pct": 13.29
+      },
+      {
+       "nombre": "Perú",
+       "pct": 12.44
+      },
+      {
+       "nombre": "Colombia",
+       "pct": 11.24
+      }
+     ],
+     "sector": [
+      {
+       "nombre": "Financiero",
+       "pct": 31.54
+      },
+      {
+       "nombre": "Otros",
+       "pct": 19.59
+      },
+      {
+       "nombre": "Gobierno",
+       "pct": 14.07
+      },
+      {
+       "nombre": "Utilities",
+       "pct": 12.84
+      },
+      {
+       "nombre": "Materiales básicos",
+       "pct": 12.5
+      },
+      {
+       "nombre": "Energía",
+       "pct": 9.46
+      }
+     ],
+     "riesgo_crediticio": [
+      {
+       "nombre": "AAA / AA-",
+       "pct": 12.97
+      },
+      {
+       "nombre": "BBB+ / BBB-",
+       "pct": 52.43
+      },
+      {
+       "nombre": "BB+ / BB-",
+       "pct": 32.14
+      },
+      {
+       "nombre": "Otros",
+       "pct": 2.46
+      }
+     ],
+     "top_emisores": [
+      {
+       "nombre": "Letras del Tesoro",
+       "pct": 7.08
+      },
+      {
+       "nombre": "Banco Inbursa",
+       "pct": 4.83
+      },
+      {
+       "nombre": "Banco Latinoamericano",
+       "pct": 4.38
+      },
+      {
+       "nombre": "Banco Votorantim",
+       "pct": 3.57
+      },
+      {
+       "nombre": "Corp. Financiera de Desarrollo",
+       "pct": 3.45
+      },
+      {
+       "nombre": "Infraestructura Energética Nova",
+       "pct": 3.41
+      },
+      {
+       "nombre": "Suzano Austria",
+       "pct": 3.41
+      },
+      {
+       "nombre": "Cemex Materials",
+       "pct": 3.28
+      },
+      {
+       "nombre": "Codelco Metals",
+       "pct": 3.22
+      },
+      {
+       "nombre": "Inretail Consumer",
+       "pct": 3.1
+      }
+     ]
+    },
+    "moneda": [
+     {
+      "nombre": "Dólares",
+      "pct": 100.0
+     }
+    ]
+   },
+   "metricas_factsheet": {
+    "periodos": [
+     "YTD",
+     "3M",
+     "6M",
+     "9M",
+     "12M",
+     "2025",
+     "2024"
+    ],
+    "fondo": [
+     1.7,
+     0.35,
+     1.24,
+     1.7,
+     2.58,
+     5.01,
+     3.26
+    ],
+    "benchmark": [
+     3.9,
+     1.12,
+     2.4,
+     3.9,
+     5.28,
+     5.92,
+     4.04
+    ]
+   },
+   "en_que_invierte": "Fondo de fondos de renta fija que invierte como mínimo 75 % en cuotas del fondo CC Latin American Short Duration (deuda latinoamericana de corto y mediano plazo) y hasta 25 % en deuda con clasificación promedio BB+ en Latinoamérica.",
+   "perspectiva_12m": {
+    "base": "Retorno depende del carry de bonos corporativos y de las tasas del Tesoro a plazos medios. El sesgo restrictivo de la Fed añade presión sobre precios; una duración acotada reduce esa sensibilidad.",
+    "riesgos": "Alza de tasas del Tesoro. Ampliación de spreads corporativos latinoamericanos. Moneda local de los emisores.",
+    "vigilar": "Rendimiento del Tesoro a 5 años · spreads IG/HY latam · reunión FOMC."
+   },
+   "fuente_pdf": "https://www.credicorpcapital.com/Peru/Fondos/FonMut/Int/Fondos%20de%20Renta%20Fija/Objetivo%20Latam/Hojas_Informativas_Setiembre_2026-FF%C2%A0CC%C2%A0Duraci%C3%B3n_Objetivo_Latam.pdf",
+   "fecha_lectura": "2026-10-28",
+   "fuente_estable": "https://www.credicorpcapital.com/Peru/Fondos/FonMut/Int/Paginas/CC-OL.aspx?t=3"
+  },
+  {
+   "id": "cc_deuda_corporativa_latam_hy",
+   "nombre_excel": "CRED DEUDA CORP LATAM HY CREDICORP SAF",
+   "corte": "2026-09",
+   "nota": "Fondo dirigido exclusivamente a inversionistas institucionales.",
+   "composicion": {
+    "patrimonio": {
+     "valor": 77.35,
+     "unidad": "US$ MM"
+    },
+    "duracion": {
+     "valor": 4.96,
+     "unidad": "años"
+    },
+    "volatilidad": 3.29,
+    "tipo_instrumento": [
+     {
+      "nombre": "Fondos Luxemburgo (CC Latam Corporate Debt)",
+      "pct": 93.77
+     },
+     {
+      "nombre": "Depósitos a plazo",
+      "pct": 5.51
+     },
+     {
+      "nombre": "Otros",
+      "pct": 0.72
+     }
+    ],
+    "top_emisores": [
+     {
+      "nombre": "CC Latam Corporate Debt",
+      "pct": 93.77
+     },
+     {
+      "nombre": "Banco de Crédito del Perú",
+      "pct": 5.51
+     }
+    ],
+    "subyacente": {
+     "nombre": "CC Latam Corporate Debt",
+     "region": [
+      {
+       "nombre": "Otros",
+       "pct": 25.71
+      },
+      {
+       "nombre": "México",
+       "pct": 18.42
+      },
+      {
+       "nombre": "Brasil",
+       "pct": 17.87
+      },
+      {
+       "nombre": "Colombia",
+       "pct": 15.62
+      },
+      {
+       "nombre": "Chile",
+       "pct": 13.61
+      },
+      {
+       "nombre": "Argentina",
+       "pct": 8.78
+      }
+     ],
+     "sector": [
+      {
+       "nombre": "Utilities",
+       "pct": 26.8
+      },
+      {
+       "nombre": "Otros",
+       "pct": 26.13
+      },
+      {
+       "nombre": "Petróleo y gas",
+       "pct": 18.88
+      },
+      {
+       "nombre": "Financiero",
+       "pct": 14.37
+      },
+      {
+       "nombre": "Consumo",
+       "pct": 8.78
+      },
+      {
+       "nombre": "TMT",
+       "pct": 5.04
+      }
+     ],
+     "riesgo_crediticio": [
+      {
+       "nombre": "AAA / A-",
+       "pct": 1.97
+      },
+      {
+       "nombre": "BBB+ / BBB-",
+       "pct": 21.23
+      },
+      {
+       "nombre": "BB+ / BB-",
+       "pct": 52.36
+      },
+      {
+       "nombre": "B+ / B-",
+       "pct": 22.03
+      },
+      {
+       "nombre": "CCC+ / CCC-",
+       "pct": 0.86
+      },
+      {
+       "nombre": "Otros",
+       "pct": 1.55
+      }
+     ],
+     "top_emisores": [
+      {
+       "nombre": "Ecopetrol",
+       "pct": 4.03
+      },
+      {
+       "nombre": "Saavi Energia",
+       "pct": 2.04
+      },
+      {
+       "nombre": "YPF",
+       "pct": 1.91
+      },
+      {
+       "nombre": "Autopistas del Sol",
+       "pct": 1.88
+      },
+      {
+       "nombre": "MC Brazil Downstream",
+       "pct": 1.85
+      },
+      {
+       "nombre": "Banco Mercantil del Norte",
+       "pct": 1.83
+      },
+      {
+       "nombre": "Banco de Crédito e Inversiones",
+       "pct": 1.81
+      },
+      {
+       "nombre": "Inversiones CMPC",
+       "pct": 1.61
+      },
+      {
+       "nombre": "Banco Bilbao Vizcaya Argentaria",
+       "pct": 1.55
+      },
+      {
+       "nombre": "Energuate Trust",
+       "pct": 1.46
+      }
+     ]
+    },
+    "moneda": [
+     {
+      "nombre": "Dólares",
+      "pct": 100.0
+     }
+    ]
+   },
+   "metricas_factsheet": {
+    "periodos": [
+     "YTD",
+     "3M",
+     "6M",
+     "9M",
+     "12M",
+     "2025",
+     "2024"
+    ],
+    "fondo": [
+     0.46,
+     -1.71,
+     1.38,
+     0.46,
+     1.49,
+     9.25,
+     9.42
+    ],
+    "benchmark": [
+     1.04,
+     -2.25,
+     0.93,
+     1.04,
+     2.27,
+     8.58,
+     8.24
+    ]
+   },
+   "en_que_invierte": "Fondo que invierte en cuotas de fondos mutuos de deuda de diversos plazos, con duración de instrumentos entre 90 días y 10 años. A septiembre de 2026, 93,8 % está en el fondo CC Latam Corporate Debt, cuya cartera es mayormente BB+/BB- (52,4 %). Distribuye en enero, abril, julio y octubre.",
+   "perspectiva_12m": {
+    "base": "Mayor carry con volatilidad superior a grado de inversión. El retorno depende de los spreads high yield y del ciclo de crédito; tasas más altas elevan el costo de refinanciamiento de los emisores.",
+    "riesgos": "Defaults, ampliación de spreads, menor liquidez en episodios de estrés.",
+    "vigilar": "Spread HY latam · tasa de default · reunión FOMC · precio de commodities."
+   },
+   "fuente_pdf": "https://www.credicorpcapital.com/Peru/Fondos/FonMut/Loc/Fondos%20Institucionales/Deuda%20Corporativa%20High%20Yield%20Latam/Hojas_Informativas_Setiembre_2026-Deuda_Corporativa_Latam_High_Yield.pdf",
+   "fecha_lectura": "2026-10-28",
+   "fuente_estable": "https://www.credicorpcapital.com/Peru/Fondos/FonMut/Loc/Paginas/CC-DCHYL-FMIV.aspx"
+  },
+  {
+   "id": "cc_acciones_latam_pe",
+   "nombre_excel": "",
+   "corte": "2026-09",
+   "nota": "No está en la matriz de fondos.xlsx; es el FdF Credicorp Capital Acciones Latam FMIV (Perú). El id heredado era cc_latin_american_equity_i.",
+   "composicion": {
+    "patrimonio": {
+     "valor": 15.49,
+     "unidad": "US$ MM"
+    },
+    "duracion": null,
+    "volatilidad": 20.9,
+    "tipo_instrumento": [
+     {
+      "nombre": "Fondo CC Latin American Equity Fund",
+      "pct": 94.73
+     },
+     {
+      "nombre": "Depósito Banco de Crédito del Perú",
+      "pct": 5.27
+     }
+    ],
+    "top_emisores": [
+     {
+      "nombre": "Petróleo Brasileiro",
+      "pct": 9.3
+     },
+     {
+      "nombre": "Itaú Unibanco",
+      "pct": 7.7
+     },
+     {
+      "nombre": "Nu Holdings",
+      "pct": 6.1
+     },
+     {
+      "nombre": "Vale",
+      "pct": 5.4
+     },
+     {
+      "nombre": "Grupo México",
+      "pct": 5.1
+     },
+     {
+      "nombre": "Bradesco",
+      "pct": 4.0
+     },
+     {
+      "nombre": "Banco BTG Pactual",
+      "pct": 3.6
+     },
+     {
+      "nombre": "Grupo Financiero Banorte",
+      "pct": 3.5
+     },
+     {
+      "nombre": "Fomento Económico Mexicano",
+      "pct": 3.4
+     }
+    ],
+    "subyacente": {
+     "nombre": "CC Latin American Equity Fund",
+     "region": [
+      {
+       "nombre": "Brasil",
+       "pct": 63.3
+      },
+      {
+       "nombre": "México",
+       "pct": 17.94
+      },
+      {
+       "nombre": "Chile",
+       "pct": 6.62
+      },
+      {
+       "nombre": "Perú",
+       "pct": 5.93
+      },
+      {
+       "nombre": "Colombia",
+       "pct": 5.71
+      }
+     ],
+     "sector": [
+      {
+       "nombre": "Financiero",
+       "pct": 39.38
+      },
+      {
+       "nombre": "Materiales",
+       "pct": 22.33
+      },
+      {
+       "nombre": "Energía",
+       "pct": 11.35
+      },
+      {
+       "nombre": "Utilities",
+       "pct": 10.01
+      },
+      {
+       "nombre": "Otros",
+       "pct": 8.64
+      },
+      {
+       "nombre": "Industriales",
+       "pct": 8.29
+      }
+     ]
+    },
+    "moneda": [
+     {
+      "nombre": "Dólares",
+      "pct": 100.0
+     }
+    ]
+   },
+   "metricas_factsheet": {
+    "periodos": [
+     "YTD",
+     "3M",
+     "6M",
+     "9M",
+     "12M",
+     "2025",
+     "2024"
+    ],
+    "fondo": [
+     12.61,
+     2.25,
+     3.22,
+     12.61,
+     19.9,
+     42.83,
+     -27.39
+    ],
+    "benchmark": [
+     14.64,
+     3.84,
+     0.58,
+     14.64,
+     23.55,
+     48.83,
+     -29.02
+    ]
+   },
+   "en_que_invierte": "Fondo de fondos que invierte como mínimo 75 % en cuotas del fondo extranjero CC Latin American Equity Fund (acciones de empresas de Latinoamérica o con ganancias significativas en la región) y hasta 25 % en instrumentos de deuda. Perfil agresivo.",
+   "perspectiva_12m": {
+    "base": "Retorno sin ancla de carry; depende de commodities, tipo de cambio y flujos hacia la región. Rango de resultados amplio a 12 meses.",
+    "riesgos": "Dólar fuerte, caída de commodities, riesgo fiscal y político en la región.",
+    "vigilar": "Dólar (DXY) · cobre y otros commodities · resultados de elecciones y fiscal en la región."
+   },
+   "fuente_pdf": "https://www.credicorpcapital.com/Peru/Fondos/FonMut/Int/Fondos%20de%20Renta%20Variable/Acciones%20Latam/Hojas_Informativas_Setiembre_2026-Acciones_Latam.pdf",
+   "fecha_lectura": "2026-10-28",
+   "fuente_estable": "https://www.credicorpcapital.com/Peru/Fondos/FonMut/Int/Paginas/ALP-FMIV.aspx?t=2"
+  },
+  {
+   "id": "blum_money_market_usd",
+   "nombre_excel": "BLUM MONEY MARKET $ FM BLUM SAF",
+   "corte": "2026-09",
+   "composicion": {
+    "patrimonio": {
+     "valor": 26.13,
+     "unidad": "US$ MM"
+    },
+    "duracion": null,
+    "ytw": 5.45,
+    "rating_promedio": "Grado de inversión",
+    "sector": [
+     {
+      "nombre": "Financiero ex-USA",
+      "pct": 47.1
+     },
+     {
+      "nombre": "No financiero USA",
+      "pct": 30.4
+     },
+     {
+      "nombre": "Industrial",
+      "pct": 14.6
+     },
+     {
+      "nombre": "Utilities",
+      "pct": 2.9
+     },
+     {
+      "nombre": "Energía",
+      "pct": 1.9
+     },
+     {
+      "nombre": "Financiero USA",
+      "pct": 1.9
+     },
+     {
+      "nombre": "Caja y equivalentes",
+      "pct": 1.2
+     }
+    ],
+    "moneda": [
+     {
+      "nombre": "Dólares",
+      "pct": 100.0
+     }
+    ]
+   },
+   "metricas_factsheet": {
+    "periodos": [
+     "3M",
+     "6M",
+     "YTD",
+     "12M",
+     "2025",
+     "2024"
+    ],
+    "fondo": [
+     0.8,
+     2.04,
+     2.58,
+     3.78,
+     5.32,
+     5.37
+    ],
+    "benchmark": [
+     0.6,
+     1.23,
+     1.86,
+     2.55,
+     2.74,
+     3.27
+    ]
+   },
+   "en_que_invierte": "Fondo que busca preservar el capital invirtiendo en renta fija global de corto plazo en dólares, seleccionada por fortaleza crediticia y diversificación geográfica y sectorial. Referencia: promedio de tasas de depósitos a 60 días en dólares. Institucional.",
+   "perspectiva_12m": {
+    "base": "Retorno anclado a las tasas de corto plazo en dólares. Con la Fed en 3,75–4,00% y la mediana del SEP en 4,1% para fin de 2026, el carry en USD se mantiene o sube levemente.",
+    "riesgos": "Recortes de la Fed si el mercado laboral se debilita. Ampliación de spreads en emisores corporativos.",
+    "vigilar": "Reunión FOMC del 27–28 oct · rendimiento del Tesoro a 2 años · spreads de crédito de corto plazo."
+   },
+   "fuente_pdf": "https://cdn.prod.website-files.com/6254a50daf6298adb0c003ca/6ac90aaacdd3d496a15ac8e5_BMM%20-%20Set%202026.pdf",
+   "fecha_lectura": "2026-10-28",
+   "fuente_estable": "https://www.miblum.com/fondo-blum-money-market"
+  },
+  {
+   "id": "blum_bonos_globales",
+   "nombre_excel": "",
+   "corte": "2026-09",
+   "nota": "No está en la matriz de fondos.xlsx (fondo institucional; Blum Renta Global FM Serie B es otro).",
+   "composicion": {
+    "patrimonio": {
+     "valor": 54.01,
+     "unidad": "US$ MM"
+    },
+    "duracion": null,
+    "estrategia": [
+     {
+      "nombre": "High yield",
+      "pct": 16.0
+     },
+     {
+      "nombre": "Grado de inversión",
+      "pct": 15.9
+     },
+     {
+      "nombre": "Mercados emergentes",
+      "pct": 15.5
+     },
+     {
+      "nombre": "Flexible",
+      "pct": 15.3
+     },
+     {
+      "nombre": "Renta alternativa",
+      "pct": 11.7
+     },
+     {
+      "nombre": "Arbitraje convertible",
+      "pct": 7.5
+     },
+     {
+      "nombre": "Cat bonds",
+      "pct": 7.3
+     },
+     {
+      "nombre": "Merger arbitrage",
+      "pct": 3.1
+     },
+     {
+      "nombre": "Event driven",
+      "pct": 2.9
+     },
+     {
+      "nombre": "Deuda privada",
+      "pct": 2.1
+     },
+     {
+      "nombre": "Caja",
+      "pct": 1.7
+     },
+     {
+      "nombre": "Market neutral",
+      "pct": 1.2
+     }
+    ],
+    "moneda": [
+     {
+      "nombre": "Dólares",
+      "pct": 100.0
+     }
+    ]
+   },
+   "metricas_factsheet": {
+    "periodos": [
+     "1M",
+     "3M",
+     "6M",
+     "12M",
+     "YTD",
+     "2025",
+     "2024"
+    ],
+    "fondo": [
+     -0.84,
+     0.24,
+     2.96,
+     4.51,
+     2.72,
+     7.69,
+     5.6
+    ],
+    "benchmark": [
+     -2.6,
+     -3.28,
+     -2.19,
+     -1.5,
+     -2.74,
+     6.99,
+     2.35
+    ]
+   },
+   "en_que_invierte": "Fondo que invierte en instrumentos globales generadores de renta y alternativos líquidos de volatilidad moderada, con el objetivo de superar los retornos del mercado global de bonos en dólares. Referencia: 90 % iShares US Aggregate Bond + 10 % iShares $ Treasury Bond 0-1 año. Institucional.",
+   "perspectiva_12m": {
+    "base": "Retorno repartido entre carry de crédito, renta alternativa y estrategias de arbitraje. En septiembre las estrategias alternativas (bonos vinculados a seguros, CLOs) compensaron en parte los retrocesos de grado de inversión, high yield y emergentes.",
+    "riesgos": "Alza de tasas del Tesoro. Ampliación de spreads de crédito. Menor liquidez en estrategias alternativas en episodios de estrés.",
+    "vigilar": "Rendimiento del Tesoro a 10 años · spreads IG/HY · reunión FOMC · precio del petróleo."
+   },
+   "fuente_pdf": "https://cdn.prod.website-files.com/6254a50daf62983becc003f6/6ac90e5c433f478ca49dfcd1_BBG%20-%20Set%202026.pdf",
+   "fecha_lectura": "2026-10-28",
+   "fuente_estable": "https://www.miblum.com/fondo-blum-bonos-globales"
+  }
+ ]
+}
