@@ -1,0 +1,136 @@
+{
+  "fondos": [
+    {
+      "fondo_id": "blum_money_market_usd",
+      "fondo": "Blum Money Market USD",
+      "nombre_excel": "BLUM MONEY MARKET $ FM BLUM SAF",
+      "saf": "Blum",
+      "url_pdf": "https://cdn.prod.website-files.com/6254a50daf6298adb0c003ca/6ac90aaacdd3d496a15ac8e5_BMM%20-%20Set%202026.pdf",
+      "url_pagina": "https://www.miblum.com/fondo-blum-money-market",
+      "periodo": "2026-09",
+      "estado": "PDF_ENLACE_VALIDADO",
+      "ultima_revision": "2026-10-28T15:15:42+00:00"
+    },
+    {
+      "fondo_id": "bbva_renta_corto_plazo_usd",
+      "fondo": "BBVA Renta Corto Plazo Dólares",
+      "nombre_excel": "BBVA RENTA CORTO PLAZO $ BBVA SAF",
+      "saf": "BBVA",
+      "url_pdf": "https://bbvaamdocs.bbva.com/documents/BBVA/SUPRDMNPEEQU_FINV_20261009_PER_SPA_0.pdf",
+      "url_pagina": "https://producto.bbvaassetmanagement.com/pe/index.html#!/fichape/SUPRDMNPEEQU",
+      "periodo": "",
+      "estado": "ENLACE_ANTERIOR_SIN_REVALIDAR",
+      "ultima_revision": "2026-10-28T15:15:43+00:00"
+    },
+    {
+      "fondo_id": "cc_conservador_corto_usd",
+      "fondo": "CC Conservador Corto Plazo Dólares",
+      "nombre_excel": "CRED. CONSER. CORTO PLAZO $ SERIE A",
+      "saf": "Credicorp",
+      "url_pdf": "https://www.credicorpcapital.com/Peru/Fondos/FonMut/Loc/Fondos%20de%20Renta%20Fija/Conservador_Corto_Plazo_Dolares/Hojas_Informativas_Setiembre_2026-CC_Corto_Plazo_D%C3%B3lares_-_Serie_A.pdf",
+      "url_pagina": "https://www.credicorpcapital.com/Peru/Fondos/FonMut/Loc/Paginas/CPD.aspx?t=3",
+      "periodo": "2026-09",
+      "estado": "PDF_ENLACE_VALIDADO",
+      "ultima_revision": "2026-10-28T15:16:20+00:00"
+    },
+    {
+      "fondo_id": "cc_duracion_objetivo_latam",
+      "fondo": "FdF CC Duración Objetivo Latam",
+      "nombre_excel": "FdF CC Duración Objetivo Latam CREDICORP SAF",
+      "saf": "Credicorp",
+      "url_pdf": "https://www.credicorpcapital.com/Peru/Fondos/FonMut/Int/Fondos%20de%20Renta%20Fija/Objetivo%20Latam/Hojas_Informativas_Setiembre_2026-FF%C2%A0CC%C2%A0Duraci%C3%B3n_Objetivo_Latam.pdf",
+      "url_pagina": "https://www.credicorpcapital.com/Peru/Fondos/FonMut/Int/Paginas/CC-OL.aspx?t=3",
+      "periodo": "2026-09",
+      "estado": "PDF_ENLACE_VALIDADO",
+      "ultima_revision": "2026-10-28T15:16:26+00:00"
+    },
+    {
+      "fondo_id": "cc_deuda_corporativa_latam_hy",
+      "fondo": "CC Deuda Corporativa Latam High Yield",
+      "nombre_excel": "CRED DEUDA CORP LATAM HY CREDICORP SAF",
+      "saf": "Credicorp",
+      "url_pdf": "https://www.credicorpcapital.com/Peru/Fondos/FonMut/Loc/Fondos%20Institucionales/Deuda%20Corporativa%20High%20Yield%20Latam/Hojas_Informativas_Setiembre_2026-Deuda_Corporativa_Latam_High_Yield.pdf",
+      "url_pagina": "https://www.credicorpcapital.com/Peru/Fondos/FonMut/Loc/Paginas/CC-DCHYL-FMIV.aspx",
+      "periodo": "2026-09",
+      "estado": "PDF_ENLACE_VALIDADO",
+      "ultima_revision": "2026-10-28T15:16:32+00:00"
+    },
+    {
+      "fondo_id": "bbva_renta_corto_plazo_pen",
+      "fondo": "BBVA Renta Corto Plazo Soles",
+      "nombre_excel": "BBVA RENTA CORTO PLAZO S/. BBVA SAF",
+      "saf": "BBVA",
+      "url_pdf": "https://bbvaamdocs.bbva.com/documents/BBVA/BBVATSO-PE_FINV_20261009_PER_SPA_0.pdf",
+      "url_pagina": "https://producto.bbvaassetmanagement.com/pe/index.html#!/BBVATSO-PE",
+      "periodo": "",
+      "estado": "ENLACE_ANTERIOR_SIN_REVALIDAR",
+      "ultima_revision": "2026-10-28T15:16:34+00:00"
+    },
+    {
+      "fondo_id": "cc_conservador_corto_pen",
+      "fondo": "CC Conservador Corto Plazo Soles",
+      "nombre_excel": "CRED. CONSER. CORTO PLAZO S/ SERIE A",
+      "saf": "Credicorp",
+      "url_pdf": "https://www.credicorpcapital.com/Peru/Fondos/FonMut/Loc/Fondos%20de%20Renta%20Fija/Conservador_Corto_Plazo_Soles/Hojas_Informativas_Setiembre_2026-CC_Corto_Plazo_Soles_-_Serie_A.pdf",
+      "url_pagina": "https://www.credicorpcapital.com/Peru/Fondos/FonMut/Loc/Paginas/CPS.aspx?t=3",
+      "periodo": "2026-09",
+      "estado": "PDF_ENLACE_VALIDADO",
+      "ultima_revision": "2026-10-28T15:17:10+00:00"
+    },
+    {
+      "fondo_id": "cc_conservador_mediano_pen",
+      "fondo": "CC Conservador Mediano Plazo Soles",
+      "nombre_excel": "CC CONSERV. MED. PLAZO S/. SERIE A",
+      "saf": "Credicorp",
+      "url_pdf": "https://www.credicorpcapital.com/Peru/Fondos/FonMut/Loc/Fondos%20de%20Renta%20Fija/Conservador_Mediano_Plazo_Soles/Hojas_Informativas_Setiembre_2026-CC_Mediano_Plazo_Soles_-_Serie_A.pdf",
+      "url_pagina": "https://www.credicorpcapital.com/Peru/Fondos/FonMut/Loc/Paginas/CMPS-FMIV.aspx",
+      "periodo": "2026-09",
+      "estado": "PDF_ENLACE_VALIDADO",
+      "ultima_revision": "2026-10-28T15:17:13+00:00"
+    },
+    {
+      "fondo_id": "cc_deuda_corporativa_pen",
+      "fondo": "CC Deuda Corporativa Soles",
+      "nombre_excel": "CC DEUDA CORPORATIVA SOLES CREDICORP SAF",
+      "saf": "Credicorp",
+      "url_pdf": "https://www.credicorpcapital.com/Peru/Fondos/FonMut/Loc/Fondos%20de%20Renta%20Fija/Deuda_Corporativa_Soles/Hojas_Informativas_Setiembre_2026-Deuda_Corporativa_Soles.pdf",
+      "url_pagina": "https://www.credicorpcapital.com/Peru/Fondos/FonMut/Loc/Paginas/CC-DCS-FMIV.aspx?t=3",
+      "periodo": "2026-09",
+      "estado": "PDF_ENLACE_VALIDADO",
+      "ultima_revision": "2026-10-28T15:17:15+00:00"
+    },
+    {
+      "fondo_id": "blum_bonos_globales",
+      "fondo": "Blum Bonos Globales",
+      "nombre_excel": "",
+      "saf": "Blum",
+      "url_pdf": "https://cdn.prod.website-files.com/6254a50daf62983becc003f6/6ac90e5c433f478ca49dfcd1_BBG%20-%20Set%202026.pdf",
+      "url_pagina": "https://www.miblum.com/fondo-blum-bonos-globales",
+      "periodo": "2026-09",
+      "estado": "PDF_ENLACE_VALIDADO",
+      "ultima_revision": "2026-10-28T15:17:20+00:00"
+    },
+    {
+      "fondo_id": "bbva_fdf_distributivo",
+      "fondo": "BBVA FdF Distributivo Estratégico Global",
+      "nombre_excel": "",
+      "saf": "BBVA",
+      "url_pdf": "https://bbvaamdocs.bbva.com/documents/BBVA/382_FINV_20261009_PER_SPA_0.pdf",
+      "url_pagina": "https://producto.bbvaassetmanagement.com/pe/index.html#!/fichape/382",
+      "periodo": "2026-09",
+      "estado": "ENLACE_ANTERIOR_SIN_REVALIDAR",
+      "ultima_revision": "2026-10-28T15:17:21+00:00"
+    },
+    {
+      "fondo_id": "cc_latin_american_equity_i",
+      "fondo": "FdF CC Acciones Latam FMIV (Perú)",
+      "nombre_excel": "",
+      "saf": "Credicorp",
+      "url_pdf": "https://www.credicorpcapital.com/Peru/Fondos/FonMut/Int/Fondos%20de%20Renta%20Variable/Acciones%20Latam/Hojas_Informativas_Setiembre_2026-Acciones_Latam.pdf",
+      "url_pagina": "https://www.credicorpcapital.com/Peru/Fondos/FonMut/Int/Paginas/ALP-FMIV.aspx?t=2",
+      "periodo": "2026-09",
+      "estado": "PDF_ENLACE_VALIDADO",
+      "ultima_revision": "2026-10-28T15:17:57+00:00"
+    }
+  ]
+}
