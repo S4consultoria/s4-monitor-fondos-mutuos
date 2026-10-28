@@ -1,0 +1,178 @@
+[
+  {
+    "id": "blum_money_market_usd",
+    "saf": "Blum",
+    "nombre": "Blum Money Market USD",
+    "fuente": "https://www.miblum.com/fondo-blum-money-market",
+    "metodo": "pagina",
+    "alias_pdf": [
+      "blum money market"
+    ],
+    "estado_fuente": "Pagina publica y boton de factsheet confirmados",
+    "nombre_excel": "BLUM MONEY MARKET $ FM BLUM SAF",
+    "fuente_estable": "https://www.miblum.com/fondo-blum-money-market"
+  },
+  {
+    "id": "bbva_renta_corto_plazo_usd",
+    "saf": "BBVA",
+    "nombre": "BBVA Renta Corto Plazo Dólares",
+    "fuente": "https://fondos.bbva.pe/personas/productos/conservadores/bbva-soles-monetario-y-bbva-dolares-monetario.html",
+    "metodo": "bbva_portal",
+    "texto_enlace": "Ver fondo BBVA Renta Corto Plazo Dólares FMIV",
+    "fuente_usuario": "https://producto.bbvaassetmanagement.com/pe/index.html#!/fichape/SUPRDMNPEEQU",
+    "alias_pdf": [
+      "bbva renta corto plazo dolares",
+      "bbva corto plazo dolares"
+    ],
+    "estado_fuente": "Usar enlace individual desde pagina oficial BBVA; identificador del usuario sin verificar",
+    "nombre_excel": "BBVA RENTA CORTO PLAZO $ BBVA SAF",
+    "fuente_estable": "https://producto.bbvaassetmanagement.com/pe/index.html#!/fichape/SUPRDMNPEEQU"
+  },
+  {
+    "id": "cc_conservador_corto_usd",
+    "saf": "Credicorp",
+    "nombre": "CC Conservador Corto Plazo Dólares",
+    "fuente": "https://www.credicorpcapital.com/Peru/Fondos/FonMut/Loc/Paginas/CPD.aspx?t=3",
+    "metodo": "pagina",
+    "alias_pdf": [
+      "credicorp capital conservador corto plazo dolares",
+      "conservador corto plazo dolares"
+    ],
+    "estado_fuente": "Pagina de producto confirmada; identificacion de documento pendiente",
+    "nombre_excel": "CRED. CONSER. CORTO PLAZO $ SERIE A",
+    "fuente_estable": "https://www.credicorpcapital.com/Peru/Fondos/FonMut/Loc/Paginas/CPD.aspx?t=3"
+  },
+  {
+    "id": "cc_duracion_objetivo_latam",
+    "saf": "Credicorp",
+    "nombre": "FdF CC Duración Objetivo Latam",
+    "fuente": "https://www.credicorpcapital.com/Peru/Fondos/FonMut/Int/Paginas/CC-OL.aspx?t=3",
+    "metodo": "pagina",
+    "alias_pdf": [
+      "duracion objetivo latam",
+      "fondo de fondos credicorp capital duracion objetivo latam"
+    ],
+    "estado_fuente": "Pagina de producto confirmada; identificacion de documento pendiente",
+    "nombre_excel": "FdF CC Duración Objetivo Latam CREDICORP SAF",
+    "fuente_estable": "https://www.credicorpcapital.com/Peru/Fondos/FonMut/Int/Paginas/CC-OL.aspx?t=3"
+  },
+  {
+    "id": "cc_deuda_corporativa_latam_hy",
+    "saf": "Credicorp",
+    "nombre": "CC Deuda Corporativa Latam High Yield",
+    "fuente": "https://www.credicorpcapital.com/Peru/Fondos/FonMut/Loc/Paginas/CC-DCHYL-FMIV.aspx",
+    "metodo": "pagina",
+    "alias_pdf": [
+      "deuda corporativa latam high yield"
+    ],
+    "estado_fuente": "Pagina de producto confirmada; identificacion de documento pendiente",
+    "nombre_excel": "CRED DEUDA CORP LATAM HY CREDICORP SAF",
+    "fuente_estable": "https://www.credicorpcapital.com/Peru/Fondos/FonMut/Loc/Paginas/CC-DCHYL-FMIV.aspx"
+  },
+  {
+    "id": "bbva_renta_corto_plazo_pen",
+    "saf": "BBVA",
+    "nombre": "BBVA Renta Corto Plazo Soles",
+    "fuente": "https://fondos.bbva.pe/personas/productos/conservadores/bbva-soles-monetario-y-bbva-dolares-monetario.html",
+    "metodo": "bbva_portal",
+    "texto_enlace": "Ver fondo BBVA Renta Corto Plazo Soles FMIV",
+    "fuente_usuario": "https://producto.bbvaassetmanagement.com/pe/index.html#!/BBVATSO-PE",
+    "alias_pdf": [
+      "bbva renta corto plazo soles",
+      "bbva corto plazo soles"
+    ],
+    "estado_fuente": "Se usa fuente oficial BBVA para no confundir con Tesoreria Soles; debe visitar visor individual.",
+    "fuente_usuario_dudosa": true,
+    "nombre_excel": "BBVA RENTA CORTO PLAZO S/. BBVA SAF",
+    "fuente_estable": "https://producto.bbvaassetmanagement.com/pe/index.html#!/BBVATSO-PE"
+  },
+  {
+    "id": "cc_conservador_corto_pen",
+    "saf": "Credicorp",
+    "nombre": "CC Conservador Corto Plazo Soles",
+    "fuente": "https://www.credicorpcapital.com/Peru/Fondos/FonMut/Loc/Paginas/CPS.aspx?t=3",
+    "metodo": "pagina",
+    "alias_pdf": [
+      "credicorp capital conservador corto plazo soles",
+      "conservador corto plazo soles"
+    ],
+    "estado_fuente": "Pagina de producto confirmada; identificacion de documento pendiente",
+    "nombre_excel": "CRED. CONSER. CORTO PLAZO S/ SERIE A",
+    "fuente_estable": "https://www.credicorpcapital.com/Peru/Fondos/FonMut/Loc/Paginas/CPS.aspx?t=3"
+  },
+  {
+    "id": "cc_conservador_mediano_pen",
+    "saf": "Credicorp",
+    "nombre": "CC Conservador Mediano Plazo Soles",
+    "fuente": "https://www.credicorpcapital.com/Peru/Fondos/FonMut/Loc/Paginas/CMPS-FMIV.aspx",
+    "metodo": "pagina",
+    "alias_pdf": [
+      "credicorp capital conservador mediano plazo soles",
+      "conservador mediano plazo soles"
+    ],
+    "estado_fuente": "Pagina de producto confirmada; identificacion de documento pendiente",
+    "nombre_excel": "CC CONSERV. MED. PLAZO S/. SERIE A",
+    "fuente_estable": "https://www.credicorpcapital.com/Peru/Fondos/FonMut/Loc/Paginas/CMPS-FMIV.aspx"
+  },
+  {
+    "id": "cc_deuda_corporativa_pen",
+    "saf": "Credicorp",
+    "nombre": "CC Deuda Corporativa Soles",
+    "fuente": "https://www.credicorpcapital.com/Peru/Fondos/FonMut/Loc/Paginas/CC-DCS-FMIV.aspx?t=3",
+    "metodo": "pagina",
+    "alias_pdf": [
+      "credicorp capital deuda corporativa soles",
+      "deuda corporativa soles"
+    ],
+    "estado_fuente": "Pagina de producto confirmada; identificacion de documento pendiente",
+    "nombre_excel": "CC DEUDA CORPORATIVA SOLES CREDICORP SAF",
+    "fuente_estable": "https://www.credicorpcapital.com/Peru/Fondos/FonMut/Loc/Paginas/CC-DCS-FMIV.aspx?t=3"
+  },
+  {
+    "id": "blum_bonos_globales",
+    "saf": "Blum",
+    "nombre": "Blum Bonos Globales",
+    "fuente": "https://www.miblum.com/fondo-blum-bonos-globales",
+    "metodo": "pagina",
+    "alias_pdf": [
+      "blum bonos globales"
+    ],
+    "estado_fuente": "Pagina publica y boton de factsheet confirmados",
+    "nombre_excel": "",
+    "fuente_estable": "https://www.miblum.com/fondo-blum-bonos-globales"
+  },
+  {
+    "id": "bbva_fdf_distributivo",
+    "saf": "BBVA",
+    "nombre": "BBVA FdF Distributivo Estratégico Global",
+    "fuente": "https://fondos.bbva.pe/personas/productos/moderados/bbva-renta-global.html",
+    "metodo": "bbva_portal",
+    "texto_enlace": "Ver fondo BBVA Distributivo Estratégico Global FMIV",
+    "fuente_usuario": "https://producto.bbvaassetmanagement.com/pe/index.html#!/fichape/382",
+    "alias_pdf": [
+      "bbva distributivo estrategico global",
+      "fondo de fondos bbva distributivo estrategico global"
+    ],
+    "estado_fuente": "Ficha del inversionista visible en captura del usuario, PDF FINV con codigo 382; Octubre es fecha de archivo, septiembre periodo.",
+    "codigo_bbva": "382",
+    "url_pdf_manual": "https://bbvaamdocs.bbva.com/documents/BBVA/382_FINV_20261009_PER_SPA_0.pdf",
+    "periodo_pdf_manual": "2026-09",
+    "nombre_excel": "",
+    "fuente_estable": "https://producto.bbvaassetmanagement.com/pe/index.html#!/fichape/382"
+  },
+  {
+    "id": "cc_latin_american_equity_i",
+    "saf": "Credicorp",
+    "nombre": "FdF CC Acciones Latam FMIV (Perú)",
+    "fuente": "https://www.credicorpcapital.com/Peru/Fondos/FonMut/Int/Paginas/ALP-FMIV.aspx?t=2",
+    "metodo": "pagina",
+    "alias_pdf": [
+      "acciones latam",
+      "credicorp capital acciones latam",
+      "fondos de fondos credicorp capital acciones latam"
+    ],
+    "estado_fuente": "Vehículo peruano confirmado por usuario; el subyacente puede ser Credicorp Capital Latin American Equity. ID anterior se mantiene para no romper el monitor.",
+    "nombre_excel": "",
+    "fuente_estable": "https://www.credicorpcapital.com/Peru/Fondos/FonMut/Int/Paginas/ALP-FMIV.aspx?t=2"
+  }
+]
